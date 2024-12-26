@@ -16,4 +16,4 @@ export const login = async (credentials) => {
 
 export const logout = () => {
     localStorage.removeItem('jwt'); // Elimina el token
-};
+}; 

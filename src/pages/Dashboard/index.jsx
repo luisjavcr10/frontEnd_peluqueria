@@ -10,7 +10,6 @@ const Dashboard = () =>{
                 <NavBar />
                 <main className="p-4">
                     <Outlet />
-                    <h1>Dashboard here</h1>
                 </main>
             </div>
         </div>

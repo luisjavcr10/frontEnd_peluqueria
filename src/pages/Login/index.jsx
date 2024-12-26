@@ -17,8 +17,8 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const data=  await login(credentials);
-      console.log(data)
+      const data =  await login(credentials);
+      const user = data.user;
       authLogin();
       navigate('/'); 
     } catch (error) {
