@@ -11,19 +11,19 @@ const DropdownMenu = ({isOpenMantenedores, updateIsOpenMantenedores}) => {
   
 
   return (
-    <div className='relative'>
+    <div className=''>
       {/* Botón principal */}
       <div
         onClick={updateIsOpenMantenedores}
-        className='flex flex-row p-2 items-center rounded-xl hover:bg-gradient-to-r from-purple-500 to-rose-300 font-sans font-semibold cursor-pointer'
+        className='flex flex-col lg:flex-row p-2 m-2 items-center rounded-xl hover:bg-gradient-to-r from-purple-500 to-rose-300 font-sans font-semibold cursor-pointer'
       >
         <GrDocumentStore className='m-2' />
-        <span className='m-2'>Mantenedores</span>
+        Mantenedores
       </div>
 
       {/* Menú desplegable */}
       {isOpenMantenedores && (
-        <div className='absolute left-0 mt-2 w-48 bg-gradient-to-r from-rose-300 to-purple-500 font-sans font-semibold cursor-pointer shadow-lg rounded-lg z-50'>
+        <div className='absolute left-8 lg:left-6 mt-2  w-48 bg-gradient-to-r from-rose-300 to-purple-500 font-sans font-semibold cursor-pointer shadow-lg rounded-lg z-50'>
           <ul className='flex flex-col'>
             <li className='flex flex-row items-center hover:bg-gradient-to-r from-purple-500 to-rose-300 rounded-lg'>
                 <MdCategory className='mx-4' />

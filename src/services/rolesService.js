@@ -32,7 +32,7 @@ export const createRole = async (data) => {
 
 export const updateRole = async (id, updatedData) => {
     try {
-        const response = await api.post(`/roles/${id}`, updatedData);
+        const response = await api.put(`/roles/${id}`, updatedData);
         return response.data;
     } catch (error) {
         console.error('Error al actualizar el rol:', error);

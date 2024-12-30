@@ -56,8 +56,9 @@ const Servicios = () =>{
         try {
             const result = await getService(id);
             setServices([result])
-        } catch (error) {
-            
+        } catch (err) {
+            setError(err);
+            console.error(error);
         }
     };
 
@@ -87,9 +88,10 @@ const Servicios = () =>{
     const handleDelete = async (id) =>{
         if (confirm('¿Estás seguro de que deseas eliminar este servicio?')) {
             try {
-                const result = await deleteService(id);
+                const result= await deleteService(id);
                 setServices((prev) =>prev.filter((service) =>service.idService !==id));
-                setErrorMessage(result);
+                setOriginalServices((prev) =>prev.filter((service) =>service.idService !==id));
+                setErrorMessage(result.message)
             } catch (error) {
                 setErrorMessage(error);
                 console.error(error);
@@ -140,7 +142,7 @@ const Servicios = () =>{
                     <input 
                         type='text'  
                         className='bg-white px-4 py-2 rounded-2xl border border-gray-300'
-                        placeholder='Buscar categoría por ID'
+                        placeholder='Buscar servicio por ID'
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                     />
@@ -155,7 +157,7 @@ const Servicios = () =>{
                     <button 
                         onClick={() => openCreateModal()} 
                         className='flex items-center justify-center text-black bg-green-500 p-2 m-2 rounded-xl transition delay-50 hover:bg-green-700 hover:-translate-y-2 hover:scale-110 hover:text-white shadow-md shadow-green-200'>
-                        <h1 className='mx-2 hover:text-white'>Agregar nueva categoría</h1>
+                        <h1 className='mx-2 hover:text-white'>Agregar nuevo servicio</h1>
                         <IoMdAddCircle className='mx-2' />
                     </button>
                 </div>
