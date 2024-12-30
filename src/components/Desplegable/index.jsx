@@ -36,16 +36,6 @@ const DropdownMenu = ({isOpenMantenedores, updateIsOpenMantenedores}) => {
                 </NavLink>
             </li>
             <li className='flex flex-row items-center hover:bg-gradient-to-r from-purple-500 to-rose-300 rounded-lg'>
-                <FaProductHunt className='mx-4'/>
-                <NavLink
-                    to='/productos'
-                    className='block p-2 text-gray-700'
-                    onClick={updateIsOpenMantenedores}
-                >
-                    Productos
-                </NavLink>
-            </li>
-            <li className='flex flex-row items-center hover:bg-gradient-to-r from-purple-500 to-rose-300 rounded-lg'>
                 <PiOfficeChairFill className='mx-4'/>
                 <NavLink
                     to='/servicios'

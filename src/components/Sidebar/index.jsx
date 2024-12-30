@@ -14,8 +14,6 @@ import { useNavigate } from 'react-router-dom';
 const Sidebar = () =>{
     const [isOpenSidebar, setIsOpenSidebar] = useState(false)
     const [isOpenMantenedores, setIsOpenMantenedores] = useState(false);
-    const {logout: authLogOut} = useAuth();
-    const navigate = useNavigate();
 
     const updateIsOpenMantenedores = () =>{
         setIsOpenMantenedores(!isOpenMantenedores)
