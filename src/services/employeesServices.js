@@ -32,7 +32,7 @@ export const createEmployee = async (data) => {
 
 export const updateEmployee = async (id, updatedData) => {
     try {
-        const response = await api.post(`/employees/${id}`, updatedData);
+        const response = await api.put(`/employees/${id}`, updatedData);
         return response.data;
     } catch (error) {
         console.error('Error al actualizar el empleado:', error);

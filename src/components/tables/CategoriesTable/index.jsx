@@ -12,8 +12,8 @@ const CategoriesTable = ({ categories, onShow, onEdit, onDelete }) => {
               <th className='border border-gray-300 px-4 py-2 text-left text-white'>Nombre</th>
               <th className='border border-gray-300 px-4 py-2 text-left text-white'>Descripción</th>
               <th className='border border-gray-300 px-4 py-2 text-left text-white'>Opciones</th>
-            </tr>
-          </thead>
+            </tr> 
+          </thead> 
           <tbody>
             {categories.map((category, index) => (
               <tr

@@ -17,7 +17,7 @@ const Categorias = () => {
     const [offset, setOffset] = useState(0);
     const limit = 8;
 
-    useEffect(() => { handleFetchAll(); }, [offset]);
+    useEffect(() => { handleFetchAll()}, [offset]);
 
     //Metodos para la paginacion
     const handleNextPage = () => {
@@ -101,7 +101,7 @@ const Categorias = () => {
       }
     };
 
-    //Metodos para la operacion del modal
+    //Metodos para la operacion del modalß
     const openShowModal = (category) => {
       setSelectedCategory(category);
       setModalMode('show');
