@@ -1,5 +1,7 @@
-import { FaEye, FaEdit } from 'react-icons/fa';
-import { FaDeleteLeft } from 'react-icons/fa6';
+import ShowButton from '../../buttons/ShowButton';
+import EditButton from '../../buttons/EditButton';
+import DeleteButton from '../../buttons/DeleteButton';
+
 
 const ServicesTable = ({services, onShow, onEdit, onDelete}) =>{
     return (
@@ -28,24 +30,18 @@ const ServicesTable = ({services, onShow, onEdit, onDelete}) =>{
                         
                         <td className='border border-gray-300 px-2 mx-2'>
                         <div className='flex space-x-2 overflow-x-auto'>
-                            <button
-                            onClick={() => onShow(service)}
-                            className='p-2 m-2 bg-sky-400 rounded-md transition delay-50 hover:bg-sky-700 hover:-translate-y-2 hover:scale-110 hover:text-white'
-                            >
-                            <FaEye />
-                            </button>
-                            <button
-                            onClick={() => onEdit(service)}
-                            className='p-2 m-2 bg-yellow-400 rounded-md transition delay-50 hover:bg-yellow-600 hover:-translate-y-2 hover:scale-110 hover:text-white'
-                            >
-                            <FaEdit />
-                            </button>
-                            <button
-                            onClick={() => onDelete(service.idService)}
-                            className='p-2 m-2 bg-red-500 rounded-md transition delay-50 hover:bg-red-700 hover:-translate-y-2 hover:scale-110 hover:text-white'
-                            >
-                            <FaDeleteLeft />
-                            </button>
+                            <ShowButton
+                                entity={service}
+                                onShow={onShow}
+                            />
+                            <EditButton
+                                entity={service}
+                                onEdit={onEdit}
+                            />
+                            <DeleteButton
+                                id={service.idService}
+                                onDelete={onDelete}
+                            />
                         </div>
                         </td>
                     </tr>

@@ -2,7 +2,7 @@ import ShowButton from '../../buttons/ShowButton';
 import EditButton from '../../buttons/EditButton';
 import DeleteButton from '../../buttons/DeleteButton';
 
-const CategoriesTable = ({ categories, onShow, onEdit, onDelete }) => {
+const BasicTable = ({ entities, mode, onShow, onEdit, onDelete }) => {
   return (
     <div className='flex justify-center w-full mt-8'>
       <div className='w-4/5 overflow-x-auto'>
@@ -16,26 +16,26 @@ const CategoriesTable = ({ categories, onShow, onEdit, onDelete }) => {
             </tr> 
           </thead> 
           <tbody>
-            {categories.map((category, index) => (
+            {entities.map((entity, index) => (
               <tr
-                key={category.idCategory}
+                key={mode==='categories'? entity.idCategory : entity.idRole}
                 className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
               >
-                <td className='border border-gray-300 px-2 mx-2 text-sm'>{category.idCategory}</td>
-                <td className='border border-gray-300 px-2 mx-2 text-sm'>{category.name}</td>
-                <td className='border border-gray-300 px-2 mx-2 text-sm'>{category.description}</td>
+                <td className='border border-gray-300 px-2 mx-2 text-sm'>{mode==='categories'? entity.idCategory : entity.idRole}</td>
+                <td className='border border-gray-300 px-2 mx-2 text-sm'>{entity.name}</td>
+                <td className='border border-gray-300 px-2 mx-2 text-sm'>{entity.description}</td>
                 <td className='border border-gray-300 px-2 mx-2'>
                   <div className='flex space-x-2 overflow-x-auto'>
                     <ShowButton
-                      entity={category}
+                      entity={entity}
                       onShow={onShow}
                     />
                     <EditButton
-                      entity={category}
+                      entity={entity}
                       onEdit={onEdit}
                     />
                     <DeleteButton
-                      id={category.idCategory}
+                      id={mode==='categories'? entity.idCategory : entity.idRole}
                       onDelete={onDelete}
                     />
                   </div>
@@ -49,4 +49,4 @@ const CategoriesTable = ({ categories, onShow, onEdit, onDelete }) => {
   );
 };
 
-export default CategoriesTable;
+export default BasicTable;

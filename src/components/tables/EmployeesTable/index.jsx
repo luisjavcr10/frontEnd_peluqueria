@@ -1,7 +1,8 @@
-import { FaEye, FaEdit } from 'react-icons/fa';
-import { FaDeleteLeft } from 'react-icons/fa6';
+import ShowButton from '../../buttons/ShowButton';
+import EditButton from '../../buttons/EditButton';
+import DeleteButton from '../../buttons/DeleteButton';
 
-const EmployeesTable =  ( {employees, onShow, onEdit, onDelete}) =>{
+const EmployeesTable =  ( {employees, onShow, onEdit, onDelete}) =>{ 
     return (
         <div className='flex justify-center w-full mt-8'>
           <div className='w-4/5 overflow-x-auto'>
@@ -29,24 +30,18 @@ const EmployeesTable =  ( {employees, onShow, onEdit, onDelete}) =>{
                     <td className='border border-gray-300 px-2 mx-2 text-sm'>{employee.user.role.name}</td>
                     <td className='border border-gray-300 px-2 mx-2'>
                       <div className='flex space-x-2 overflow-x-auto'>
-                        <button
-                          onClick={() => onShow(employee)}
-                          className='p-2 m-2 bg-sky-400 rounded-md transition delay-50 hover:bg-sky-700 hover:-translate-y-2 hover:scale-110 hover:text-white'
-                        >
-                          <FaEye />
-                        </button>
-                        <button
-                          onClick={() => onEdit(employee)}
-                          className='p-2 m-2 bg-yellow-400 rounded-md transition delay-50 hover:bg-yellow-600 hover:-translate-y-2 hover:scale-110 hover:text-white'
-                        >
-                          <FaEdit />
-                        </button>
-                        <button
-                          onClick={() => onDelete(employee.idEmployee)}
-                          className='p-2 m-2 bg-red-500 rounded-md transition delay-50 hover:bg-red-700 hover:-translate-y-2 hover:scale-110 hover:text-white'
-                        >
-                          <FaDeleteLeft />
-                        </button>
+                        <ShowButton
+                          entity={employee}
+                          onShow={onShow}
+                        />
+                        <EditButton
+                          entity={employee}
+                          onEdit={onEdit}
+                        />
+                        <DeleteButton
+                          id={employee.idEmployee}
+                          onDelete={onDelete}
+                        />
                       </div>
                     </td>
                   </tr>
