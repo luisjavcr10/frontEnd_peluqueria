@@ -86,7 +86,7 @@ const EmployeeModal = ({ isOpen, employee, mode, onClose, handleEdit, handleCrea
           <div className="mb-4">
             <label className="block text-gray-700">Teléfono:</label>
             <input
-              type="text"
+              type="number"
               name="phone"
               value={formData.phone}
               onChange={handleChange}

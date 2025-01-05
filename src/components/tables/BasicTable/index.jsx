@@ -18,10 +18,10 @@ const BasicTable = ({ entities, mode, onShow, onEdit, onDelete }) => {
           <tbody>
             {entities.map((entity, index) => (
               <tr
-                key={mode==='categories'? entity.idCategory : entity.idRole}
+                key={mode==='Categoria'? entity.idCategory : entity.idRole}
                 className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
               >
-                <td className='border border-gray-300 px-2 mx-2 text-sm'>{mode==='categories'? entity.idCategory : entity.idRole}</td>
+                <td className='border border-gray-300 px-2 mx-2 text-sm'>{mode==='Categoria'? entity.idCategory : entity.idRole}</td>
                 <td className='border border-gray-300 px-2 mx-2 text-sm'>{entity.name}</td>
                 <td className='border border-gray-300 px-2 mx-2 text-sm'>{entity.description}</td>
                 <td className='border border-gray-300 px-2 mx-2'>
@@ -35,7 +35,7 @@ const BasicTable = ({ entities, mode, onShow, onEdit, onDelete }) => {
                       onEdit={onEdit}
                     />
                     <DeleteButton
-                      id={mode==='categories'? entity.idCategory : entity.idRole}
+                      id={mode==='Categoria'? entity.idCategory : entity.idRole}
                       onDelete={onDelete}
                     />
                   </div>

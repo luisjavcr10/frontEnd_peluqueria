@@ -1,7 +1,7 @@
 import { MdCancel } from 'react-icons/md';
 import { FaSave } from 'react-icons/fa';
 
-const RoleModal = ({isOpen, mode, role, onClose, onSave, handleEdit, handleCreate}) =>{
+const BasicModal = ({ isOpen, mode, entity, onClose, onSave,handleEdit, handleCreate, tableMode}) =>{
     if (!isOpen) return null; 
   
     return (
@@ -9,17 +9,17 @@ const RoleModal = ({isOpen, mode, role, onClose, onSave, handleEdit, handleCreat
         <div className='bg-white p-6 rounded-lg shadow-lg w-full max-w-md'>
           <h2 className='text-lg font-bold mb-4'>
             {mode === 'show'
-              ? 'Detalles del Rol'
+              ? `Detalles de ${tableMode}`
               : mode === 'edit'
-              ? 'Editar Rol'
-              : 'Crear Rol'}
+              ? `Editar ${tableMode}`
+              : `Crear ${tableMode}`}
           </h2>
           <form>
             <div className={`mb-4 ${mode === 'create' ? 'hidden' : ''}`}>
               <label className='block text-gray-700'>ID:</label>
               <input
-                type='text'
-                value={role?.idRole || ''}
+                type='number'
+                value={tableMode==='Categoria'? entity?.idCategory: entity?.idRole}
                 readOnly
                 className='w-full p-2 border rounded bg-gray-100 cursor-not-allowed'
               />
@@ -28,10 +28,10 @@ const RoleModal = ({isOpen, mode, role, onClose, onSave, handleEdit, handleCreat
               <label className='block text-gray-700'>Nombre:</label>
               <input
                 type='text'
-                value={role?.name || ''}
+                value={entity?.name || ''}
                 readOnly={mode === 'show'}
                 onChange={(e) =>
-                  onSave({ ...role, name: e.target.value })
+                  onSave({ ...entity, name: e.target.value })
                 }
                 className='w-full p-2 border rounded'
               />
@@ -39,10 +39,10 @@ const RoleModal = ({isOpen, mode, role, onClose, onSave, handleEdit, handleCreat
             <div className='mb-4'>
               <label className='block text-gray-700'>Descripción:</label>
               <textarea
-                value={role?.description || ''}
+                value={entity?.description || ''}
                 readOnly={mode === 'show'}
                 onChange={(e) =>
-                  onSave({ ...role, description: e.target.value })
+                  onSave({ ...entity, description: e.target.value })
                 }
                 className='w-full p-2 border rounded'
               />
@@ -57,7 +57,7 @@ const RoleModal = ({isOpen, mode, role, onClose, onSave, handleEdit, handleCreat
               </button>
               {mode !== 'show' && (
                 <button
-                    onClick={()=>mode=== 'edit' ? handleEdit(role.idRole, role): handleCreate(role) }
+                  onClick={ () => mode === 'edit' ? (tableMode==='Categoria'? handleEdit(entity.idCategory, entity): handleEdit(entity.idRole, entity)): handleCreate(entity)}
                   type='submit'
                   className='px-4 py-2 bg-green-500  rounded transition delay-50 hover:bg-green-700 hover:-translate-y-2 hover:scale-110 hover:text-white'
                 >
@@ -69,6 +69,6 @@ const RoleModal = ({isOpen, mode, role, onClose, onSave, handleEdit, handleCreat
         </div>
       </div>
     );
-};
+}
 
-export default RoleModal;
+export default BasicModal;

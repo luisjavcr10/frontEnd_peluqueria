@@ -18,7 +18,7 @@ const ServiceModal = ({isOpen, mode, service, onClose,onSave, handleEdit, handle
             <div className={`mb-4 ${mode === 'create' ? 'hidden' : ''}`}>
               <label className='block text-gray-700'>ID:</label>
               <input
-                type='text'
+                type='number'
                 value={service?.idService || ''}
                 readOnly
                 className='w-full p-2 border rounded bg-gray-100 cursor-not-allowed'
@@ -49,7 +49,8 @@ const ServiceModal = ({isOpen, mode, service, onClose,onSave, handleEdit, handle
             </div>
             <div className='mb-4'>
               <label className='block text-gray-700'>Precio:</label>
-              <textarea
+              <input
+                type='number'
                 value={service?.price || ''}
                 readOnly={mode === 'show'}
                 onChange={(e) =>

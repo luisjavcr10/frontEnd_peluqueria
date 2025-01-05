@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { getRole, getRoles, createRole, updateRole, deleteRole } from '../../../services/rolesService';
 
-import RoleModal from '../../../components/modals/RoleModal';
+import BasicModal from '../../../components/modals/BasicModal';
 import BasicTable from '../../../components/tables/BasicTable';
 import Subtitle from '../../../components/text/Subtitle';
 import FormSearch from '../../../components/forms/FormSearch';
@@ -20,7 +20,7 @@ const Roles = () =>{
     const [offset, setOffset] = useState(0);
     const [message, setMessage] = useState(null);
     const limit = 10;
-    const tableMode = 'roles'
+    const tableMode = 'Rol'
 
     useEffect(()=>{handleFetchAll()},[offset]);
 
@@ -156,14 +156,15 @@ const Roles = () =>{
                 onDelete = {handleDelete}
             />
 
-            <RoleModal
+            <BasicModal
                 isOpen= {isModalOpen}
                 mode=  {modalMode}
-                role=  {selectedRole}
+                entity=  {selectedRole}
                 onClose=  {closeModal}
                 onSave= {(data) => setSelectedRole(data)}
                 handleEdit= {handleEdit}
                 handleCreate= {handleCreate}
+                tableMode={tableMode}
             />
             
             {roles.length === originalRoles.length && (<PaginationButton offset={offset} previus={handlePreviousPage} next={handleNextPage}/>)}

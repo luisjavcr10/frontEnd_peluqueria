@@ -53,31 +53,31 @@ const Ventas = () =>{
                     <div className='bg-orange-600 p-8 m-4 rounded-lg'>3. Ganancia del dia</div>
                 </div>
             </div>
-            <div className="bg-gray-50 border border-gray-300 rounded-2xl shadow-xl p-6 m-4 w-11/12 lg:w-2/5 h-2/5 lg:h-3/4 overflow-y-auto">
-            <h1 className="text-xl font-bold text-gray-800 mb-4 text-center border-b pb-2">Historial de Ventas</h1>
+            <div className='bg-gray-50 border border-gray-300 rounded-2xl shadow-xl p-6 m-4 w-11/12 lg:w-2/5 h-2/5 lg:h-3/4 overflow-y-auto'>
+            <h1 className='text-xl font-bold text-gray-800 mb-4 text-center border-b pb-2'>Historial de Ventas</h1>
             {sales.map((sale) => (
                 <div
                 key={sale.idSales}
-                className="grid grid-cols-2 gap-x-4 gap-y-2 p-4 bg-white border border-gray-200 rounded-xl shadow-md hover:scale-105 transition-transform duration-300 my-4"
+                className='grid grid-cols-2 gap-x-4 gap-y-2 p-4 bg-white border border-gray-200 rounded-xl shadow-md hover:scale-105 transition-transform duration-300 my-4'
                 onClick={()=>openModal(sale)}
                 >
-                <div className="flex items-center col-span-2">
+                <div className='flex items-center col-span-2'>
                     <IoBag className='m-2'/>
-                    <h1 className="text-lg font-semibold text-blue-600">
+                    <h1 className='text-lg font-semibold text-blue-600'>
                     Id de la venta: {sale.idSales}
                     </h1>
                 </div>
-                <div className="flex items-center">
+                <div className='flex items-center'>
                     <FaUser className='m-2'/>
-                    <h1 className="text-gray-800">Empleado: {sale.user.name}</h1>
+                    <h1 className='text-gray-800'>Empleado: {sale.user.name}</h1>
                 </div>
-                <div className="flex items-center">
+                <div className='flex items-center'>
                     <FaClipboardUser className='m-2' />
-                    <h1 className="text-gray-800">Cliente: {sale.nameCustomer}</h1>
+                    <h1 className='text-gray-800'>Cliente: {sale.nameCustomer}</h1>
                 </div>
-                <div className="flex items-center col-span-2 justify-end">
+                <div className='flex items-center col-span-2 justify-end'>
                     {/*Agregar icono*/}
-                    <h1 className="text-gray-800 font-semibold">Total: S/. {sale.total}</h1>
+                    <h1 className='text-gray-800 font-semibold'>Total: S/. {sale.total}</h1>
                 </div>
                 </div>
             ))}

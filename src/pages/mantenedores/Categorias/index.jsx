@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { getCategories, createCategory, deleteCategory, updateCategory, getCategory } from '../../../services/categoriesService';
 
 import BasicTable from '../../../components/tables/BasicTable';
-import CategoryModal from '../../../components/modals/CategoryModal';
+import BasicModal from '../../../components/modals/BasicModal';
 import Subtitle from '../../../components/text/Subtitle';
 import FormSearch from '../../../components/forms/FormSearch';
 import AddButton from '../../../components/buttons/AddButton';
@@ -20,7 +20,7 @@ const Categorias = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [offset, setOffset] = useState(0);
     const limit = 8;
-    const tableMode = 'categories';
+    const tableMode = 'Categoria';
 
     useEffect(() => { handleFetchAll()}, [offset]);
 
@@ -157,14 +157,15 @@ const Categorias = () => {
         />
 
         {/* Modal */}
-        <CategoryModal
+        <BasicModal
           isOpen={isModalOpen}
           mode={modalMode}
-          category={selectedCategory}
+          entity={selectedCategory}
           onClose={closeModal}
           onSave={(data) => setSelectedCategory(data)}
           handleEdit={handleEdit}
           handleCreate={handleCreate}
+          tableMode = {tableMode}
         />
 
         {categories.length === originalCategories.length && (<PaginationButton offset={offset} previus={handlePreviousPage} next={handleNextPage}/>)}
