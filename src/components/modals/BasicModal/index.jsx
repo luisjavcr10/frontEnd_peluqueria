@@ -1,5 +1,6 @@
-import { MdCancel } from 'react-icons/md';
 import { FaSave } from 'react-icons/fa';
+
+import XButton from '../../buttons/XButton';
 
 const BasicModal = ({ isOpen, mode, entity, onClose, onSave,handleEdit, handleCreate, tableMode}) =>{
     if (!isOpen) return null; 
@@ -48,13 +49,9 @@ const BasicModal = ({ isOpen, mode, entity, onClose, onSave,handleEdit, handleCr
               />
             </div>
             <div className='flex justify-end space-x-4'>
-              <button
-                type='button'
-                onClick={onClose}
-                className='px-4 py-2 bg-red-500 rounded transition delay-50 hover:bg-red-700 hover:-translate-y-2 hover:scale-110 hover:text-white'
-              >
-                <MdCancel />
-              </button>
+              
+              <XButton close={onClose}/>
+
               {mode !== 'show' && (
                 <button
                   onClick={ () => mode === 'edit' ? (tableMode==='Categoria'? handleEdit(entity.idCategory, entity): handleEdit(entity.idRole, entity)): handleCreate(entity)}

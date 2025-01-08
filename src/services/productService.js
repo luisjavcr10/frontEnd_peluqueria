@@ -2,10 +2,15 @@ import api from './api';
 
 export const getProducts = async (offset,limit) =>{
     try {
-        const response = await api.get('/products', {
-            params: { offset, limit }
-        });
-        return response.data;
+        if(offset === 0 && limit === 0){
+            const response = await api.get('/products');
+            return response.data;
+        }else{
+            const response = await api.get('/products', {
+                params: { offset, limit }
+            });
+            return response.data;
+        }
     } catch (error) {
         console.error(error);
         throw error.response?.data?.message;

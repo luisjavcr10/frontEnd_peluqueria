@@ -24,8 +24,8 @@ const Categorias = () => {
 
     useEffect(() => { handleFetchAll()}, [offset]);
 
-    const handleInputValue = (text) =>{
-      setInputValue(text);
+    const handleInputValue = (e) =>{
+      setInputValue(e.target.value);
     }
 
     //Metodos para la paginacion
