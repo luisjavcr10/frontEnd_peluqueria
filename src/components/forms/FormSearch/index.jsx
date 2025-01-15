@@ -1,4 +1,3 @@
-import { FaSearch } from 'react-icons/fa';
 import SearchButton from '../../buttons/SearchButton';
 
 const FormSearch = ({submit, input, handleInput}) =>{

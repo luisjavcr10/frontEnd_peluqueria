@@ -44,25 +44,28 @@ const LoteItemsModal = ({ products, close, closeBefore, updateMethod }) => {
                 key={product.idProduct}
                 className="flex items-center justify-between bg-gray-100 p-3 rounded-lg shadow"
                 >
-                <div>
-                    <p className="font-semibold">{product.name}</p>
-                    <p className="text-sm text-gray-500">Stock: {product.stock}</p>
-                </div>
-                <input
-                    type="number"
-                    placeholder="Cantidad a agregar"
-                    value={inputValues[product.idProduct] || ''} 
-                    onChange={(e) =>
-                    handleChangeInputValue(product.idProduct, e.target.value)
-                    }
-                    className="border rounded px-3 py-1 text-sm w-48"
-                />
-                <button
-                    onClick={() => addBody(product.idProduct, product.stock)}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                >
-                    Confirmar
-                </button>
+                    <div>
+                        <p className="font-semibold">{product.name}</p>
+                        <p className="text-sm text-gray-500">Stock: {product.stock}</p>
+                    </div>
+                    <div className='flex justify-end gap-2'>
+                        <input
+                            type="number"
+                            placeholder="Cantidad a agregar"
+                            value={inputValues[product.idProduct] || ''} 
+                            onChange={(e) =>
+                            handleChangeInputValue(product.idProduct, e.target.value)
+                            }
+                            className="border rounded px-3 py-1 text-sm w-48"
+                        />
+                        <button
+                            onClick={() => addBody(product.idProduct, product.stock)}
+                            className="px-4 py-2 font-semibold bg-gradient-to-r  from-blue-400 to-blue-700 text-white rounded-md transition-transform transform duration-300  hover:-translate-y-2 hover:scale-110"
+                        >
+                            Confirmar
+                        </button>
+                    </div>
+                    
                 </div>
             ))}
             </div>
@@ -71,13 +74,13 @@ const LoteItemsModal = ({ products, close, closeBefore, updateMethod }) => {
             <div className="flex justify-end gap-4 mt-6">
             <button
                 onClick={close}
-                className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 text-gray-700"
+                className="px-4 py-2 bg-gradient-to-r  from-gray-100 to-gray-300 font-semibold rounded-md hover:bg-gray-300 text-gray-700 transition-transform transform duration-300  hover:-translate-y-2 hover:scale-110"
             >
                 Regresar
             </button>
             <button
                 onClick={updateProducts} 
-                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className="px-4 py-2 bg-gradient-to-r  from-green-400 to-green-700 font-semibold text-white rounded-md hover:bg-green-600 transition-transform transform duration-300  hover:-translate-y-2 hover:scale-110"
             >
                 Finalizar
             </button>

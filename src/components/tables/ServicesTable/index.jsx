@@ -7,28 +7,28 @@ const ServicesTable = ({services, onShow, onEdit, onDelete}) =>{
     return (
         <div className='flex justify-center w-full mt-8'>
             <div className='w-4/5 overflow-x-auto'>
-                <table className='table-auto w-full border-collapse border border-black'>
-                <thead className='bg-black'>
-                    <tr>
-                    <th className='border border-gray-300 px-4 py-2 text-left text-white'>ID</th>
-                    <th className='border border-gray-300 px-4 py-2 text-left text-white'>Nombre</th>
-                    <th className='border border-gray-300 px-4 py-2 text-left text-white'>Descripción</th>
-                    <th className='border border-gray-300 px-4 py-2 text-left text-white'>Precio</th>
-                    <th className='border border-gray-300 px-4 py-2 text-left text-white'>Opciones</th>
+                <table className='table-auto w-full'>
+                <thead className='bg-gradient-to-r from-zinc-900 to-slate-700'>
+                    <tr className='text-left text-white'>
+                    <th className='px-4 py-2 rounded-s-3xl'>ID</th>
+                    <th className='px-4 py-2'>Nombre</th>
+                    <th className='px-4 py-2'>Descripción</th>
+                    <th className='px-4 py-2'>Precio</th>
+                    <th className='px-4 py-2 rounded-e-3xl'>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {services.map((service, index) => (
                     <tr
                         key={service.idService}
-                        className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                        className='border-b-2 border-stone-700'
                     >
-                        <td className='border border-gray-300 px-2 mx-2 text-sm'>{service.idService}</td>
-                        <td className='border border-gray-300 px-2 mx-2 text-sm'>{service.name}</td>
-                        <td className='border border-gray-300 px-2 mx-2 text-sm'>{service.description}</td>
-                        <td className='border border-gray-300 px-2 mx-2 text-sm'>{service.price}</td>
+                        <td className='px-2 mx-2 text-sm'>{service.idService}</td>
+                        <td className='px-2 mx-2 text-sm'>{service.name}</td>
+                        <td className='px-2 mx-2 text-sm'>{service.description}</td>
+                        <td className='px-2 mx-2 text-sm'>{service.price}</td>
                         
-                        <td className='border border-gray-300 px-2 mx-2'>
+                        <td className='px-2 mx-2'>
                         <div className='flex space-x-2 overflow-x-auto'>
                             <ShowButton
                                 entity={service}

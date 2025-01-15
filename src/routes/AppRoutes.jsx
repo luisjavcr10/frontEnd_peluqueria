@@ -12,6 +12,7 @@ import Productos from '../pages/mantenedores/Productos';
 import Servicios from '../pages/mantenedores/Servicios';
 import Empleados from '../pages/mantenedores/Empleados';
 import Roles from '../pages/mantenedores/Roles';
+import MantenedorHome from '../pages/MantenedorHome';
 
 const AppRoutes = () =>{
     return (
@@ -25,15 +26,15 @@ const AppRoutes = () =>{
                         <ProtectedRoute>
                             <Dashboard/>
                         </ProtectedRoute>}>
-
+                        <Route path='mantenedores' element={<MantenedorHome/>}/>
                         <Route path='inventario' element={<Inventario/>}/>
                         <Route path='cuenta-usuario' element={<CuentaUsuario/>}/>
                         <Route path='ventas' element={<Ventas/>}/>
-                        <Route path='categorias' element={<Categorias/>}/>
-                        <Route path='productos' element={<Productos/>}/>
-                        <Route path='servicios' element={<Servicios/>}/>
-                        <Route path='empleados' element={<Empleados/>}/>
-                        <Route path='roles' element={<Roles/>}/>
+                        <Route path='mantenedores/categorias' element={<Categorias/>}/>
+                        <Route path='mantenedores/productos' element={<Productos/>}/>
+                        <Route path='mantenedores/servicios' element={<Servicios/>}/>
+                        <Route path='mantenedores/empleados' element={<Empleados/>}/>
+                        <Route path='mantenedores/roles' element={<Roles/>}/>
                     </Route>
                     {/* Redirección por defecto */}
                     <Route path='*' element={<Navigate to="/login" />} />   

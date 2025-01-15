@@ -4,6 +4,9 @@ import {getCategories} from '../../services/categoriesService';
 import PaginationButton from '../../components/buttons/PaginationButton';
 import StockModal from '../../components/modals/StockModal';
 import LoteModal from '../../components/modals/LoteModal';
+import AddLote from '../../components/buttons/AddLote';
+import Select from '../../components/select';
+import ProductList from '../../components/lists/ProductList';
 
 const Inventario = () => {
     const [products, setProducts] = useState([]);
@@ -121,93 +124,30 @@ const Inventario = () => {
     }, [offset]);
 
     return (
-        <div className='p-4 bg-gray-50 min-h-screen'>
+        <div className='p-4 bg-white min-h-screen'>
             <div className='max-w-5xl mx-auto h-screen overflow-y-auto m-2'>
                 {/* Botón y Select */}
-                <div className='flex items-center justify-between mb-6 bg-white p-4 shadow-md rounded-lg'>
-                <button 
-                    className='bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-200'
-                    onClick={handleOpenLotelModal}
-                >
-                    Agregar Lote
-                </button>
-                <select
-                    className='bg-gray-100 border border-gray-300 rounded-lg text-gray-700 py-2 px-4 focus:ring-2 focus:ring-green-400 focus:outline-none'
-                    value={selectedValue}
-                    onChange={handleChangeSelect}
-                >
-                    <option value='default'>Todos</option>
-                    {categories.map((category) => (
-                    <option
-                        key={category.idCategory}
-                        value={category.idCategory}
-                        className='text-gray-700'
-                    >
-                        {category.name}
-                    </option>
-                    ))}
-                </select>
+                <div className='flex items-center justify-between mb-6 bg-gray-50 p-4 shadow-md rounded-lg gap-2'>
+                    <AddLote handleOpen={handleOpenLotelModal}/>
+                    <Select value={selectedValue} handleChange={handleChangeSelect} entities={categories}/>
                 </div>
 
                 {/* Lista de Productos */}
-                <ul className='space-y-6'>
-                {products.map((product) => (
-                    <li
-                    key={product.idProduct}
-                    className='bg-white shadow-md rounded-lg p-6 flex flex-col sm:flex-row sm:items-center justify-between hover:shadow-lg transition-shadow duration-200'
-                    >
-                    <div>
-                        <h3 className='text-2xl font-semibold text-gray-800 mb-2'>
-                        {product.name}
-                        </h3>
-                        <p className='text-gray-600 text-sm mb-1'>
-                        <span className='font-medium text-gray-800'>Descripción:</span>{' '}
-                        {product.description}
-                        </p>
-                        <p className='text-gray-600 text-sm mb-1'>
-                        <span className='font-medium text-gray-800'>Precio:</span> $
-                        {product.price}
-                        </p>
-                        <p className='text-gray-600 text-sm mb-1'>
-                        <span className='font-medium text-gray-800'>Stock:</span>{' '}
-                        {product.stock}
-                        </p>
-                        <p className='text-gray-600 text-sm'>
-                        <span className='font-medium text-gray-800'>Categoría:</span>{' '}
-                        {product.category?.name}
-                        </p>
-                    </div>
-                    <button className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 mt-4 sm:mt-0 sm:ml-4 rounded-lg shadow-md transition-all duration-200'
-                        onClick={()=>{handleOpenModal(product)}}>
-                        Agregar Stock
-                    </button>
-                    </li>
-                ))}
-                </ul>
+                <ProductList products={products} handleOpen={handleOpenModal}/>
 
-                {(selectedValue==='default' || selectedValue===0) && <PaginationButton
-                    offset={offset}
-                    previus={handlePreviousPage}
-                    next={handleNextPage}
-                />}
+                {(selectedValue==='default' || selectedValue===0) && 
+                <div className='pb-8'>
+                    <PaginationButton offset={offset} previus={handlePreviousPage}next={handleNextPage}/>
+                </div>}
                 
             </div>
 
             {isOpenStockModal && 
-            <StockModal 
-                product={selectedProduct} 
-                submit={handleSubmit} 
-                addStock={addedStock} 
-                handleAddStock={handleAddedStock} 
-                closeModal={handleCloseModal}
-            />}
+            <StockModal product={selectedProduct} submit={handleSubmit} addStock={addedStock} 
+                handleAddStock={handleAddedStock} closeModal={handleCloseModal}/>}
 
             {isOpenLoteModal &&
-            <LoteModal
-                data={allProducts}
-                close={handleCloseLotelModal}
-                updateMethod ={handleUpdateStock}
-            />}
+            <LoteModal data={allProducts} close={handleCloseLotelModal} updateMethod ={handleUpdateStock}/>}
         </div>
     );
 };

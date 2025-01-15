@@ -10,6 +10,7 @@ import AddButton from '../../../components/buttons/AddButton';
 import PaginationButton from '../../../components/buttons/PaginationButton';
 import BackButton from '../../../components/buttons/BackButton';
 
+
 const Categorias = () => {
     const [categories, setCategories] = useState([]);
     const [originalCategories, setOriginalCategories] = useState([]);
@@ -39,6 +40,7 @@ const Categorias = () => {
 
     //Metodos para el buscador
     const handleSubmit = (e) => {
+      console.log('llego hasta aqui')
       e.preventDefault();
       if (inputValue.trim() !== '') {
         handleFetchOne(inputValue);
@@ -64,6 +66,7 @@ const Categorias = () => {
 
     const handleFetchOne = async (id) => {
       try {
+        console.log(id);
         const result = await getCategory(id);
         setCategories([result]);
       } catch (error) {
@@ -144,10 +147,10 @@ const Categorias = () => {
 
         <div className='flex flex-col lg:flex-row items-center justify-evenly px-6 pt-6 pb-2 mx-6 mt-6 mb-2'>
           <Subtitle word={'Categorias'}/>
-          <FormSearch handleSubmit={handleSubmit} inputValue={inputValue} handleInputValue={handleInputValue}/>
+          <FormSearch submit={handleSubmit} input={inputValue} handleInput={handleInputValue}/>
           <AddButton onOpen={() => openCreateModal()} word={'categoría'}/>
         </div>
-
+      
         <BasicTable
           entities={categories}
           mode={tableMode}

@@ -6,25 +6,25 @@ const BasicTable = ({ entities, mode, onShow, onEdit, onDelete }) => {
   return (
     <div className='flex justify-center w-full mt-8'>
       <div className='w-4/5 overflow-x-auto'>
-        <table className='table-auto w-full border-collapse border border-black'>
-          <thead className='bg-black'>
-            <tr>
-              <th className='border border-gray-300 px-4 py-2 text-left text-white'>ID</th>
-              <th className='border border-gray-300 px-4 py-2 text-left text-white'>Nombre</th>
-              <th className='border border-gray-300 px-4 py-2 text-left text-white'>Descripción</th>
-              <th className='border border-gray-300 px-4 py-2 text-left text-white'>Opciones</th>
+        <table className='table-auto w-full'>
+          <thead className='bg-gradient-to-r from-zinc-900 to-slate-700'>
+            <tr className='text-white text-left'>
+              <th className='px-4 py-2 rounded-s-3xl'>ID</th>
+              <th className='px-4 py-2'>Nombre</th>
+              <th className='px-4 py-2'>Descripción</th>
+              <th className='px-4 py-2 rounded-e-3xl'>Opciones</th>
             </tr> 
           </thead> 
-          <tbody>
+          <tbody >
             {entities.map((entity, index) => (
               <tr
                 key={mode==='Categoria'? entity.idCategory : entity.idRole}
-                className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                className='border-b-2 border-stone-700'
               >
-                <td className='border border-gray-300 px-2 mx-2 text-sm'>{mode==='Categoria'? entity.idCategory : entity.idRole}</td>
-                <td className='border border-gray-300 px-2 mx-2 text-sm'>{entity.name}</td>
-                <td className='border border-gray-300 px-2 mx-2 text-sm'>{entity.description}</td>
-                <td className='border border-gray-300 px-2 mx-2'>
+                <td className='px-2 m-4 text-sm font-bold'>{mode==='Categoria'? entity.idCategory : entity.idRole}</td>
+                <td className='px-2 m-4 text-sm'>{entity.name}</td>
+                <td className='px-2 m-4 text-sm'>{entity.description}</td>
+                <td className='px-2 mx-2'>
                   <div className='flex space-x-2 overflow-x-auto'>
                     <ShowButton
                       entity={entity}

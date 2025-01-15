@@ -25,8 +25,8 @@ const Servicios = () =>{
         handleFetchAll();
     },[offset]);
     
-    const handleInputValue = (text) =>{
-        setInputValue(text);
+    const handleInputValue = (e) =>{
+        setInputValue(e.target.value);
     }
 
     //Metodos para la paginacion
@@ -143,7 +143,7 @@ const Servicios = () =>{
             )}
             <div className='flex flex-col lg:flex-row items-center justify-evenly px-6 pt-6 pb-2 mx-6 mt-6 mb-2'>
                 <Subtitle word={'Servicios'}/>
-                <FormSearch handleSubmit={handleSubmit} inputValue={inputValue} handleInputValue={handleInputValue}/>
+                <FormSearch submit={handleSubmit} input={inputValue} handleInput={handleInputValue}/>
                 <AddButton onOpen={() => openCreateModal()} word={'servicio'}/>
             </div>
 

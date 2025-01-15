@@ -50,18 +50,22 @@ const CuentaUsuario = () => {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+        <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow-lg border border-gray-200">
             {user ? (
-                <form className="space-y-4">
+                <form className="space-y-6">
+                    {/* ID */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-semibold text-gray-600">
                             ID
                         </label>
-                        <p className="mt-1 text-gray-900">{user.idUser}</p>
+                        <p className="mt-1 text-gray-800 bg-gray-100 p-2 rounded-md">
+                            {user.idUser}
+                        </p>
                     </div>
 
+                    {/* Name */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-semibold text-gray-600">
                             Name
                         </label>
                         {isEditing ? (
@@ -70,15 +74,18 @@ const CuentaUsuario = () => {
                                 name="name"
                                 value={formData.name}
                                 onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                className="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-800 p-2"
                             />
                         ) : (
-                            <p className="mt-1 text-gray-900">{user.name}</p>
+                            <p className="mt-1 text-gray-800 bg-gray-100 p-2 rounded-md">
+                                {user.name}
+                            </p>
                         )}
                     </div>
 
+                    {/* Email */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-semibold text-gray-600">
                             Email
                         </label>
                         {isEditing ? (
@@ -87,22 +94,28 @@ const CuentaUsuario = () => {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                className="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-800 p-2"
                             />
                         ) : (
-                            <p className="mt-1 text-gray-900">{user.email}</p>
+                            <p className="mt-1 text-gray-800 bg-gray-100 p-2 rounded-md">
+                                {user.email}
+                            </p>
                         )}
                     </div>
 
+                    {/* Role */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-semibold text-gray-600">
                             Role
                         </label>
-                        <p className="mt-1 text-gray-900">{user.role?.name}</p>
+                        <p className="mt-1 text-gray-800 bg-gray-100 p-2 rounded-md">
+                            {user.role?.name}
+                        </p>
                     </div>
 
+                    {/* Password */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-semibold text-gray-600">
                             Password
                         </label>
                         {isEditing ? (
@@ -111,18 +124,21 @@ const CuentaUsuario = () => {
                                 name="password"
                                 value={formData.password}
                                 onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                className="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-gray-800 p-2"
                             />
                         ) : (
-                            <p className="mt-1 text-gray-900">********</p>
+                            <p className="mt-1 text-gray-800 bg-gray-100 p-2 rounded-md">
+                                ********
+                            </p>
                         )}
                     </div>
 
+                    {/* Buttons */}
                     <div className="flex justify-end space-x-4">
                         {isEditing ? (
                             <button
                                 type="button"
-                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="py-2 px-6 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200"
                             >
                                 Save
                             </button>
@@ -130,7 +146,7 @@ const CuentaUsuario = () => {
                             <button
                                 type="button"
                                 onClick={toggleEditing}
-                                className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="py-2 px-6 bg-gray-200 text-gray-700 rounded-lg shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200"
                             >
                                 Edit
                             </button>
@@ -138,9 +154,10 @@ const CuentaUsuario = () => {
                     </div>
                 </form>
             ) : (
-                <p className="text-center text-gray-500">Loading user data...</p>
+                <p className="text-center text-gray-500">Cargando los datos del usuario...</p>
             )}
         </div>
+
     );
 };
 

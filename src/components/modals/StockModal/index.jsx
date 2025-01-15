@@ -28,13 +28,13 @@ const StockModal = ({product, submit, addStock, handleAddStock, closeModal}) =>{
                         <button
                             type='button'
                             onClick={closeModal}
-                            className='px-4 py-2 bg-gray-200 rounded hover:bg-gray-300'
+                            className='px-4 py-2 bg-gradient-to-r from-gray-200 to-gray-400 rounded hover:bg-gray-300 transition-transform transform duration-300  hover:-translate-y-2 hover:scale-110'
                         >
                             Cerrar
                         </button>
                         <button
                             type='submit'
-                            className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'
+                            className='px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-700 text-white rounded transition-transform transform duration-300  hover:-translate-y-2 hover:scale-110'
                         >
                             Actualizar Stock
                         </button>
