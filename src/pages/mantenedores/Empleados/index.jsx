@@ -4,11 +4,12 @@ import { getEmployee, getEmployees, createEmployee, updateEmployee, deleteEmploy
 
 import EmployeesTable from '../../../components/tables/EmployeesTable';
 import EmployeeModal from '../../../components/modals/EmployeeModal';
-import Subtitle from '../../../components/text/Subtitle';
 import FormSearch from '../../../components/forms/FormSearch';
 import AddButton from '../../../components/buttons/AddButton';
 import PaginationButton from '../../../components/buttons/PaginationButton';
 import BackButton from '../../../components/buttons/BackButton';
+import MantenedorSelect from '../../../components/selects/MantenedorSelect';
+import BackToMenuButton from '../../../components/buttons/BackToMenuButton';
 
 const Empleados = () =>{
     const [employees, setEmployees] = useState([]);
@@ -142,7 +143,7 @@ const Empleados = () =>{
             )}
 
             <div className='flex flex-col lg:flex-row items-center justify-evenly px-6 pt-6 pb-2 mx-6 mt-6 mb-2'>
-                <Subtitle word={'Empleados'}/>
+                <MantenedorSelect titulo={'Empleados'}/>
                 <FormSearch submit={handleSubmit} input={inputValue} handleInput={handleInputValue}/>
                 <AddButton onOpen={() => openCreateModal()} word={'empleado'}/>
             </div>
@@ -166,6 +167,10 @@ const Empleados = () =>{
             {employees.length === originalEmployees.length && (<PaginationButton offset={offset} previus={handlePreviousPage} next={handleNextPage}/>)}
 
             {employees.length !== originalEmployees.length && (<BackButton reset={handleResetEmployees}/>)}
+
+            <div className='flex justify-start ml-32'>
+                <BackToMenuButton/>
+            </div>
 
         </div>
     );

@@ -2,9 +2,16 @@ import api from './api';
 
 export const getCategories = async (offset, limit) => {
     try {
-        const response = await api.get('/categories',{
-            params:{offset, limit}
-        })
+        if(offset === 0 && limit === 0){
+            const response = await api.get('/categories');
+            return response.data;
+        }else{
+            const response = await api.get('/categories',{
+                params:{offset, limit} 
+            })
+            return response.data;
+        }
+        
         return response.data;
     } catch (error) {
         console.error('Error al obtener las categorías:', error);

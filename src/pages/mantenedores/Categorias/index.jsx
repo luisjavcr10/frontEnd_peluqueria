@@ -4,11 +4,12 @@ import { getCategories, createCategory, deleteCategory, updateCategory, getCateg
 
 import BasicTable from '../../../components/tables/BasicTable';
 import BasicModal from '../../../components/modals/BasicModal';
-import Subtitle from '../../../components/text/Subtitle';
 import FormSearch from '../../../components/forms/FormSearch';
 import AddButton from '../../../components/buttons/AddButton';
 import PaginationButton from '../../../components/buttons/PaginationButton';
 import BackButton from '../../../components/buttons/BackButton';
+import MantenedorSelect from '../../../components/selects/MantenedorSelect';
+import BackToMenuButton from '../../../components/buttons/BackToMenuButton';
 
 
 const Categorias = () => {
@@ -146,7 +147,7 @@ const Categorias = () => {
         )}
 
         <div className='flex flex-col lg:flex-row items-center justify-evenly px-6 pt-6 pb-2 mx-6 mt-6 mb-2'>
-          <Subtitle word={'Categorias'}/>
+          <MantenedorSelect titulo={'Categorias'}/>
           <FormSearch submit={handleSubmit} input={inputValue} handleInput={handleInputValue}/>
           <AddButton onOpen={() => openCreateModal()} word={'categoría'}/>
         </div>
@@ -174,6 +175,11 @@ const Categorias = () => {
         {categories.length === originalCategories.length && (<PaginationButton offset={offset} previus={handlePreviousPage} next={handleNextPage}/>)}
 
         {categories.length !== originalCategories.length && (<BackButton reset={handleResetCategories}/>)}
+        
+        <div className='flex justify-start ml-32'>
+            <BackToMenuButton/>
+        </div>
+
         </div>
     );
 };

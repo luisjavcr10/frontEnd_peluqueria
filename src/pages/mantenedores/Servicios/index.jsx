@@ -4,11 +4,12 @@ import { getService, getServices, createService, updateService, deleteService } 
 
 import ServicesTable from '../../../components/tables/ServicesTable';
 import ServiceModal from '../../../components/modals/ServiceModal';
-import Subtitle from '../../../components/text/Subtitle';
 import FormSearch from '../../../components/forms/FormSearch';
 import AddButton from '../../../components/buttons/AddButton';
 import PaginationButton from '../../../components/buttons/PaginationButton';
 import BackButton from '../../../components/buttons/BackButton';
+import MantenedorSelect from '../../../components/selects/MantenedorSelect';
+import BackToMenuButton from '../../../components/buttons/BackToMenuButton';
 
 const Servicios = () =>{
     const [services, setServices] = useState([]);
@@ -142,7 +143,7 @@ const Servicios = () =>{
                 </div>
             )}
             <div className='flex flex-col lg:flex-row items-center justify-evenly px-6 pt-6 pb-2 mx-6 mt-6 mb-2'>
-                <Subtitle word={'Servicios'}/>
+                <MantenedorSelect titulo={'Servicios'}/>
                 <FormSearch submit={handleSubmit} input={inputValue} handleInput={handleInputValue}/>
                 <AddButton onOpen={() => openCreateModal()} word={'servicio'}/>
             </div>
@@ -168,6 +169,9 @@ const Servicios = () =>{
 
             {services.length !== originalServices.length && (<BackButton reset={handleResetServices}/>)}
 
+            <div className='flex justify-start ml-32'>
+                <BackToMenuButton/>
+            </div>
         </div>
     );
 }

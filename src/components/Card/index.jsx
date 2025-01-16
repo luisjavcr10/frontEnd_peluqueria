@@ -1,3 +1,5 @@
+import { GrLogin } from "react-icons/gr";
+
 const Card = ({slide, onClick}) =>{
     return(
         <div
@@ -11,11 +13,39 @@ const Card = ({slide, onClick}) =>{
                 className='w-full h-64 lg:h-96 object-cover'
             />
             <button 
-                className='text-center font-semibold text-lg text-white p-2 my-4 bg-black rounded-xl'
+                className="
+                    text-center 
+                    text-lg 
+                    text-white 
+                    px-6 
+                    py-3 
+                    my-4 
+                    bg-gradient-to-r 
+                    from-gray-500 
+                    via-gray-600 
+                    to-gray-700 
+                    hover:from-gray-600 
+                    hover:via-gray-700 
+                    hover:to-gray-800 
+                    rounded-xl 
+                    flex 
+                    flex-row 
+                    items-center 
+                    gap-3 
+                    shadow-lg 
+                    hover:shadow-xl 
+                    transform 
+                    hover:scale-105 
+                    transition 
+                    duration-300 
+                    ease-in-out
+                "
                 onClick={onClick}
             >
-                Ingresar al mantenedor
+                Visitar
+                <GrLogin className="text-xl" />
             </button>
+
         </div>
     );
 }

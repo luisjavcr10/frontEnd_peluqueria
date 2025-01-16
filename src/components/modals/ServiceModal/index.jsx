@@ -1,7 +1,7 @@
 import { MdCancel } from 'react-icons/md';
 import { FaSave } from 'react-icons/fa';
 
-const ServiceModal = ({isOpen, mode, service, onClose,onSave, handleEdit, handleCreate}) =>{
+const ServiceModal = ({isOpen, mode, service, onClose, onSave, handleEdit, handleCreate}) =>{
     if (!isOpen) return null; 
   
     return (

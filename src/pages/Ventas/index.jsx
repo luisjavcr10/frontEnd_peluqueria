@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { getSales } from '../../services/salesServices';
+import { useNavigate } from 'react-router-dom';
 
 import { IoBag } from 'react-icons/io5';
 import { FaUser } from 'react-icons/fa';
 import { FaClipboardUser } from 'react-icons/fa6';
+import { TbListDetails } from 'react-icons/tb';
 
 const Ventas = () =>{
     const [sales, setSales] = useState([]);
@@ -13,6 +15,7 @@ const Ventas = () =>{
     const [offset, setOffset] = useState(0);
     const [message, setMessage] = useState(null);
     const limit = 10;
+    const navigate = useNavigate();
 
     useEffect(() => {handleFetchAll()}, [offset]);
 
@@ -28,13 +31,18 @@ const Ventas = () =>{
         setSelectedSale(null);
     };
 
+    const handleNewSale = () =>{
+        console.log('Holaaaaaaaaaaaaa')
+        navigate('/ventas/detalles-venta');
+    };
+
     const handleFetchAll = async () =>{
         try {
             const data = await getSales(offset, limit);
             setSales(data.sales);
             setOriginalSales(data.sales);
             console.log(sales);
-            console.log(isOpenModal);
+            console.log(isOpenModal); 
         } catch (error) {
             setMessage(error);
             console.error(message);
@@ -48,6 +56,7 @@ const Ventas = () =>{
                 <div className='w-full  flex justify-center mb-4'>
                     <button 
                         className='bg-gradient-to-r from-gray-600 to-neutral-700 text-zinc-300 text-lg sm:text-xl lg:text-2xl px-6 py-3 rounded-lg font-semibold lg:transition-transform lg:transform lg:duration-300 lg:hover:-translate-y-2l lg:hover:scale-110 hover:text-white shadow-md shadow-gray-600 w-full lg:w-auto'
+                        onClick={handleNewSale}
                     >
                         Registrar nueva venta
                     </button>
