@@ -56,6 +56,7 @@ const Productos = () =>{
             console.log(data);
         } catch (error) {
             console.error(error);
+            setMessage(error);
         }
     };
 
