@@ -1,0 +1,131 @@
+import { useEffect, useState } from 'react';
+import { getProducts } from '../../../services/productService';
+
+const ModalListProduct = ({ isOpen, onClose, onAddItems }) => {
+  const [products, setProducts] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [offset, setOffset] = useState(0);
+  const limit = 10;
+
+  const handleFetchAll = async () => {
+    try {
+      const data = await getProducts(offset, limit);
+      setProducts(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      handleFetchAll();
+    }
+  }, [isOpen, offset]);
+
+  const handleSelectProduct = (product) => {
+    setSelectedProducts(prev => {
+      const exists = prev.find(p => p.idProduct === product.idProduct);
+      if (exists) return prev;
+      return [...prev, { ...product, quantity: 1 }];
+    });
+  };
+
+  const handleQuantityChange = (id, quantity) => {
+    setSelectedProducts(prev =>
+      prev.map(p =>
+        p.idProduct === id ? { ...p, quantity: Math.max(1, quantity) } : p
+      )
+    );
+  };
+
+  const handleAddToSale = () => {
+    const itemsToAdd = selectedProducts.map(product => ({
+      type: 'PRODUCTO',
+      id: product.idProduct,
+      name: product.name,
+      unitPrice: product.price,
+      quantity: product.quantity,
+      subTotal: product.price * product.quantity
+    }));
+    
+    onAddItems(itemsToAdd);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-3/4 flex">
+        {/* Listado de productos */}
+        <div className="flex-1 p-6 border-r overflow-y-auto">
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Buscar producto..."
+              className="w-full p-2 border rounded-md"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {products
+              .filter(product =>
+                product.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((product) => (
+                <div
+                  key={product.idProduct}
+                  className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+                  onClick={() => handleSelectProduct(product)}
+                >
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-32 object-contain mb-2"
+                  />
+                  <h3 className="font-medium">{product.name}</h3>
+                  <p className="text-gray-600">S/ {product.price}</p>
+                </div>
+              ))}
+          </div>
+        </div>
+
+        {/* Productos seleccionados */}
+        <div className="w-96 p-6 overflow-y-auto">
+          <h2 className="text-lg font-semibold mb-4">Productos seleccionados</h2>
+          {selectedProducts.map((product) => (
+            <div key={product.idProduct} className="border-b py-2">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-medium">{product.name}</h3>
+                  <p className="text-gray-600">S/ {product.price}</p>
+                </div>
+                <input
+                  type="number"
+                  min="1"
+                  value={product.quantity}
+                  onChange={(e) =>
+                    handleQuantityChange(product.idProduct, parseInt(e.target.value))
+                  }
+                  className="w-20 p-1 border rounded text-center"
+                />
+              </div>
+            </div>
+          ))}
+          
+          <button
+            onClick={handleAddToSale}
+            className="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+          >
+            Agregar a la venta
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ModalListProduct;
