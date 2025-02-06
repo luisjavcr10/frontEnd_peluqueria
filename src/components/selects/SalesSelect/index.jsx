@@ -9,9 +9,9 @@ const SalesSelect = ({labelText, value, onChange, options}) =>{
           onChange={onChange}
           className="w-full p-2 border  font-light rounded-md focus:ring-2 focus:ring-sky-900 focus:outline-none"
         >
-          <option value="">Seleccionar</option>
+          <option key='default' value="">Seleccionar</option>
           {options.map((option)=>(
-            <option value={option}>{option}</option>
+            <option key={option} value={option}>{option}</option>
           ))}
         </select>
         </>

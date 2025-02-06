@@ -5,10 +5,15 @@ import H2text from "../../../components/text/H2text";
 import SalesSelect from "../../../components/selects/SalesSelect";
 import Input from "../../../components/Input";
 import AddItemInSale from "../../../components/buttons/AddItemInSale";
+import SaleDailsTable from "../../../components/tables/SaleDetailsTable";
+import { getDniData, getBasicRucData } from "../../../services/sunatService";
+import { IoSend } from "react-icons/io5";
 
 const DetallesVenta = () => {
     const [showProductModal, setShowProductModal] = useState(false);
     const [showServiceModal, setShowServiceModal] = useState(false);
+    const [readOnlyInput, setReadOnlyInput] = useState(false);
+    const [bgInput, setBgInput]=useState('');
 
     const handleAddItems = (newItems) => {
         setItems(prev => [...prev, ...newItems]);
@@ -33,8 +38,33 @@ const DetallesVenta = () => {
     const [docType, setDocType]=useState("");
     const handleDocType= (e)=>{
       setDocType(e.target.value);
-      console.log(e.target.value);
     }
+
+    //Comsumo de endpoint de api
+    const fetchNameCustomer = async () => {
+      const value = formData.idCustomer; 
+      try {
+        if (value.length === 8) {
+          console.log('before')
+          const data = await getDniData(value);
+          console.log('after')
+          if (data) {
+            setReadOnlyInput(true);
+            setBgInput('bg-gray-100')
+            handleInputChange("nameCustomer", data.Nombres || '');
+          }
+        } else if (value.length === 11) {
+          const data = await getBasicRucData(value);
+          if (data) {
+            setReadOnlyInput(true);
+            setBgInput('bg-gray-100')
+            handleInputChange("nameCustomer", data.RazonSocial || '');
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching customer data:", error);
+      }
+    };
 
     // Función para manejar cambios en los inputs del formulario
     const handleInputChange = (field, value) => {
@@ -48,122 +78,103 @@ const DetallesVenta = () => {
 
     return (
       <div className="p-6 bg-gray-50 min-h-screen">
-        <h1 className="text-2xl text-center font-semibold text-gray-800 mb-6 ml-6">
+        <h1 className="text-2xl text-center font-semibold text-gray-800 mb-6 ml-6 ">
           Registrar Venta
         </h1>
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <H2text message={'Forma de Pago'}/>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Select: Forma de Pago */}
-            <div className="relative w-full ">
-              <SalesSelect 
-                labelText={'Forma de Pago'} 
-                value={formData.methodPayment} 
-                onChange={(e) => handleInputChange("methodPayment", e.target.value)}
-                options={['Efectivo','Tarjeta','Yape']}
-              />
+        <div className="md:flex md:flex-row md:gap-4 md:justify-center">
+          {/* Formulario de la venta */}
+          <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+            <H2text message={'Datos de cliente'}/>
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+                {/* Select: Tipo de Comprobante */}
+                <div className="grid grid-cols-9 gap-2">
+                  <div className="relative w-full col-start-1 col-span-3">
+                    <SalesSelect 
+                      value={docType} 
+                      labelText={'Tipo de documento'} 
+                      onChange={handleDocType}
+                      options={['RUC','DNI']}
+                    />
+                  </div>
+                  {/* Input: Numero de Documento */}
+                  <div className="col-start-4 col-span-5">
+                    <Input 
+                      type={"number"} bg={bgInput} docType={docType}
+                      value={formData.idCustomer} readOnly={readOnlyInput}
+                      onChange={(e) => {
+                        handleInputChange("idCustomer", e.target.value);
+                      }} 
+                      placeholder={"Número de documento"}/>
+                  </div>
+                  <div className="col-start-9 col-span-1 flex justify-center">
+                    <button 
+                      className="bg-gradient-to-r from-gray-600 to-neutral-700 text-white py-2 px-6 rounded-lg shadow-md" 
+                      onClick={fetchNameCustomer}
+                    >
+                      <IoSend />
+                    </button>
+                  </div>
+                </div>
+                {/* Input: Nombre de Cliente */}
+                <div>
+                  <Input 
+                        type={"text"} readOnly={true}
+                        value={formData.nameCustomer} bg={"bg-gray-100 text-lime-600"}
+                        onChange={(e) =>handleInputChange("nameCustomer", e.target.value)} 
+                        placeholder={"Nombres y Apellidos o Razón Social"}/>
+                </div>
+                {/* Input: Correo de Cliente */}
+                <div>
+                <Input 
+                        type={"text"} readOnly={false}
+                        value={formData.correoCustomer} 
+                        onChange={(e) =>handleInputChange("correoCustomer", e.target.value)} 
+                        placeholder={"Correo electrónico (opcional)"}/>
+
+                </div>
             </div>
           </div>
-        </div>
-        {/* Formulario de la venta */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <H2text message={'Datos de cliente'}/>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Select: Tipo de Comprobante */}
-              <div className="grid grid-cols-5 gap-2">
-                <div className="relative w-full col-start-1 col-span-2">
+
+          <div className="lg:flex lg:flex-col">
+            {/* Forma de Pago */}
+            <div className="bg-white p-6 rounded-lg shadow-md mb-6 lg:h-36">
+              <H2text message={'Forma de Pago'}/>
+              <div className="flex justify-center w-full lg:w-96 gap-4">
+                <div className="relative w-full">
                   <SalesSelect 
-                    value={docType}
-                    labelText={'Tipo de documento'} 
-                    onChange={handleDocType}
-                    options={['RUC','DNI']}
+                    labelText={'Forma de Pago'} 
+                    value={formData.methodPayment} 
+                    onChange={(e) => handleInputChange("methodPayment", e.target.value)}
+                    options={['Efectivo','Tarjeta','Yape']}
                   />
                 </div>
-                {/* Input: Numero de Documento */}
-                <div className="col-start-3 col-span-3">
-                  <Input 
-                    type={"number"} 
-                    value={formData.idCustomer} readOnly={false}
-                    onChange={(e) => handleInputChange("idCustomer", e.target.value)} 
-                    placeholder={"Número de documento"}/>
-                </div>
               </div>
-              {/* Input: Nombre de Cliente */}
-              <div>
-                <Input 
-                      type={"text"} readOnly={true}
-                      value={formData.nameCustomer} bg={"bg-gray-100"}
-                      onChange={(e) =>handleInputChange("nameCustomer", e.target.value)} 
-                      placeholder={"Nombres y Apellidos o Razón Social"}/>
-              </div>
-              {/* Input: Correo de Cliente */}
-              <div>
-              <Input 
-                      type={"text"} readOnly={false}
-                      value={formData.correoCustomer} 
-                      onChange={(e) =>handleInputChange("correoCustomer", e.target.value)} 
-                      placeholder={"Correo electrónico (opcional)"}/>
-
-              </div>
+            </div>
+              {/* Botones para agregar productos y servicios */}
+            <div className="flex justify-evenly gap-4 mb-6">
+              <AddItemInSale onClick={() => setShowProductModal(true)} message={'Agregar Productos'}/>
+              <AddItemInSale onClick={() => setShowServiceModal(true)} message={'Agregar Servicios'}/>
+            </div>
           </div>
+          
+          
         </div>
+        
+        
 
-        {/* Botones para agregar productos y servicios */}
-        <div className="flex justify-evenly gap-4 mb-6">
-          <AddItemInSale onClick={() => setShowProductModal(true)} message={'Agregar Productos'}/>
-          <AddItemInSale onClick={() => setShowServiceModal(true)} message={'Agregar Servicios'}/>
-        </div>
+        
 
         {/* Tabla de productos y servicios */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
           <H2text message={'Datos de la venta'}/>
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b">
-                <th className="p-2">Tipo</th>
-                <th className="p-2">ID</th>
-                <th className="p-2">Nombre</th>
-                <th className="p-2">Precio Unitario</th>
-                <th className="p-2">Cantidad</th>
-                <th className="p-2">SubTotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan="6" className="p-2 text-center text-gray-500">
-                    No hay items agregados.
-                  </td>
-                </tr>
-              ) : (
-                items.map((item, index) => (
-                  <tr key={index} className="border-b">
-                    <td className="p-2">{item.type}</td>
-                    <td className="p-2">{item.id}</td>
-                    <td className="p-2">{item.name}</td>
-                    <td className="p-2">S/ {item.unitPrice}</td>
-                    <td className="p-2">{item.quantity}</td>
-                    <td className="p-2">S/ {item.subTotal}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-            <tfoot>
-              <tr className="bg-gray-50">
-                <td colSpan="5" className="p-2 font-semibold text-right">
-                  Total:
-                </td>
-                <td className="p-2 font-semibold">S/ {calcularTotal()}</td>
-              </tr>
-            </tfoot>
-          </table>
+          <SaleDailsTable items={items} total={calcularTotal()}/>
         </div>
 
         {/* Botón para procesar el pago */}
         <div className="mt-6">
           <button
             onClick={() => console.log("Procesar pago")}
-            className="w-full px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+            className="w-full bg-gradient-to-r from-gray-600 to-neutral-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition-transform transform lg:duration-300 hover:-translate-y-2l hover:scale-x-105"
           >
             Procesar Pago
           </button>

@@ -1,4 +1,4 @@
-import api from './api';
+import {api} from './api';
 
 export const getCurrentUser = async ()=>{
     const id = localStorage.getItem('idUser');

@@ -1,4 +1,4 @@
-import api from './api';
+import {api} from './api';
 
 export const getProducts = async (offset,limit) =>{
     try {
