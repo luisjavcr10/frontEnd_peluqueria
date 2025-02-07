@@ -9,6 +9,7 @@ import SaleDailsTable from "../../../components/tables/SaleDetailsTable";
 import { getDniData, getBasicRucData } from "../../../services/sunatService";
 import { IoSend } from "react-icons/io5";
 import { ThreeDot } from 'react-loading-indicators';
+import { MdCleaningServices } from "react-icons/md";
 
 const DetallesVenta = () => {
     const [showProductModal, setShowProductModal] = useState(false);
@@ -49,6 +50,14 @@ const DetallesVenta = () => {
     // Add this state near your other useState declarations
     const [errorMessage, setErrorMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [cleanForm, setCleanForm] = useState(false)
+
+    const handleCleanForm = () =>{
+      setCleanForm(false);
+      setFormData((prev) => ({...prev,idCustomer:'', nameCustomer: ''}));
+      setReadOnlyInput(false);
+      setBgInput('');
+    }
 
     // Modify the fetchNameCustomer function
     const fetchNameCustomer = async () => {
@@ -61,6 +70,7 @@ const DetallesVenta = () => {
             setReadOnlyInput(true);
             setBgInput('bg-gray-100');
             handleInputChange("nameCustomer", data.nombres || '');
+            setCleanForm(true);
           } else {
             setErrorMessage("Número de DNI no encontrado");
             setTimeout(() => {
@@ -73,6 +83,7 @@ const DetallesVenta = () => {
             setReadOnlyInput(true);
             setBgInput('bg-gray-100');
             handleInputChange("nameCustomer", data.razonSocial || '');
+            setCleanForm(true);
           }
         }
       } catch (error) {
@@ -100,14 +111,27 @@ const DetallesVenta = () => {
         <div className="md:flex md:flex-row md:gap-4 md:justify-center">
           {/* Formulario de la venta */}
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-            <div className="flex justify-start justify-items-center">
-              <H2text message={'Datos de cliente'}/>
-              {errorMessage && (
-                <span className="text-lg font-medium block mb-1 ml-20 bg-gradient-to-r from-red-600 to-red-400 bg-clip-text text-transparent animate-fade-in-out">
-                  {errorMessage}
-                </span>
-              )}
-            </div> 
+            <div className="flex justify-between items-center w-full">
+                <div>
+                  <H2text message={'Datos de cliente'}/>
+                </div>
+                <div className="flex-1 flex justify-center mb-4">
+                  {errorMessage && (
+                    <span className="text-lg font-medium bg-gradient-to-r from-red-600 to-red-400 bg-clip-text text-transparent animate-fade-in-out">
+                      {errorMessage}
+                    </span>
+                  )}
+                </div>
+                {cleanForm &&(
+                  <button 
+                    className="mb-4 bg-cyan-600 p-2 hover:bg-cyan-700 rounded-lg text-white transition-transform transform lg:duration-300 hover:-translate-y-2l hover:scale-110"
+                    onClick={handleCleanForm}
+                  >
+                  <MdCleaningServices className="text-xl cursor-pointer "/>
+                  </button>
+                )}
+                
+              </div>
             <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                 <div className="grid grid-cols-9 gap-2">
                   {/* Select: Tipo de Comprobante */}
@@ -139,7 +163,7 @@ const DetallesVenta = () => {
                       <ThreeDot variant="bob" color="black" size="small" text="" textColor="" />
                     ) : (
                       <button 
-                        className="bg-gradient-to-r from-gray-600 to-neutral-700 text-white py-2 px-6 rounded-lg shadow-md" 
+                        className="bg-gray-600 hover:bg-gray-700  text-white py-2 px-6 rounded-lg shadow-md transition-transform transform lg:duration-300 hover:-translate-y-2l hover:scale-110" 
                         onClick={fetchNameCustomer}
                       >
                         <IoSend />
