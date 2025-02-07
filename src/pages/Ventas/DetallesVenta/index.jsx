@@ -8,6 +8,7 @@ import AddItemInSale from "../../../components/buttons/AddItemInSale";
 import SaleDailsTable from "../../../components/tables/SaleDetailsTable";
 import { getDniData, getBasicRucData } from "../../../services/sunatService";
 import { IoSend } from "react-icons/io5";
+import { ThreeDot } from 'react-loading-indicators';
 
 const DetallesVenta = () => {
     const [showProductModal, setShowProductModal] = useState(false);
@@ -34,35 +35,50 @@ const DetallesVenta = () => {
     });
     // Estado para manejar los productos y servicios agregados
     const [items, setItems] = useState([]);
+
     // Estado para manejar solicitud de RUC y DNI
     const [docType, setDocType]=useState("");
     const handleDocType= (e)=>{
       setDocType(e.target.value);
+      setReadOnlyInput(false);
+      setBgInput('');
+      setFormData((prev) => ({...prev,idCustomer:'', nameCustomer: ''}));
     }
 
     //Comsumo de endpoint de api
+    // Add this state near your other useState declarations
+    const [errorMessage, setErrorMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Modify the fetchNameCustomer function
     const fetchNameCustomer = async () => {
-      const value = formData.idCustomer; 
+      const value = formData.idCustomer;
+      setIsLoading(true); // Start loading
       try {
         if (value.length === 8) {
-          console.log('before')
           const data = await getDniData(value);
-          console.log('after')
-          if (data) {
+          if (!data.mensaje) {
             setReadOnlyInput(true);
-            setBgInput('bg-gray-100')
-            handleInputChange("nameCustomer", data.Nombres || '');
+            setBgInput('bg-gray-100');
+            handleInputChange("nameCustomer", data.nombres || '');
+          } else {
+            setErrorMessage("Número de DNI no encontrado");
+            setTimeout(() => {
+              setErrorMessage("");
+            }, 4000);
           }
         } else if (value.length === 11) {
           const data = await getBasicRucData(value);
           if (data) {
             setReadOnlyInput(true);
-            setBgInput('bg-gray-100')
-            handleInputChange("nameCustomer", data.RazonSocial || '');
+            setBgInput('bg-gray-100');
+            handleInputChange("nameCustomer", data.razonSocial || '');
           }
         }
       } catch (error) {
         console.error("Error fetching customer data:", error);
+      } finally {
+        setIsLoading(false); // Stop loading regardless of success or failure
       }
     };
 
@@ -84,10 +100,17 @@ const DetallesVenta = () => {
         <div className="md:flex md:flex-row md:gap-4 md:justify-center">
           {/* Formulario de la venta */}
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-            <H2text message={'Datos de cliente'}/>
+            <div className="flex justify-start justify-items-center">
+              <H2text message={'Datos de cliente'}/>
+              {errorMessage && (
+                <span className="text-lg font-medium block mb-1 ml-20 bg-gradient-to-r from-red-600 to-red-400 bg-clip-text text-transparent animate-fade-in-out">
+                  {errorMessage}
+                </span>
+              )}
+            </div> 
             <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
-                {/* Select: Tipo de Comprobante */}
                 <div className="grid grid-cols-9 gap-2">
+                  {/* Select: Tipo de Comprobante */}
                   <div className="relative w-full col-start-1 col-span-3">
                     <SalesSelect 
                       value={docType} 
@@ -97,22 +120,31 @@ const DetallesVenta = () => {
                     />
                   </div>
                   {/* Input: Numero de Documento */}
-                  <div className="col-start-4 col-span-5">
+                  <div className="col-start-4 col-span-5 relative">
+                    
                     <Input 
-                      type={"number"} bg={bgInput} docType={docType}
-                      value={formData.idCustomer} readOnly={readOnlyInput}
+                      type={"number"}
+                      bg={bgInput}
+                      docType={docType}
+                      value={formData.idCustomer}
+                      readOnly={readOnlyInput}
                       onChange={(e) => {
                         handleInputChange("idCustomer", e.target.value);
                       }} 
-                      placeholder={"Número de documento"}/>
+                      placeholder={"Número de documento"}
+                    />
                   </div>
                   <div className="col-start-9 col-span-1 flex justify-center">
-                    <button 
-                      className="bg-gradient-to-r from-gray-600 to-neutral-700 text-white py-2 px-6 rounded-lg shadow-md" 
-                      onClick={fetchNameCustomer}
-                    >
-                      <IoSend />
-                    </button>
+                    {isLoading ? (
+                      <ThreeDot variant="bob" color="black" size="small" text="" textColor="" />
+                    ) : (
+                      <button 
+                        className="bg-gradient-to-r from-gray-600 to-neutral-700 text-white py-2 px-6 rounded-lg shadow-md" 
+                        onClick={fetchNameCustomer}
+                      >
+                        <IoSend />
+                      </button>
+                    )}
                   </div>
                 </div>
                 {/* Input: Nombre de Cliente */}
@@ -157,13 +189,8 @@ const DetallesVenta = () => {
             </div>
           </div>
           
-          
         </div>
         
-        
-
-        
-
         {/* Tabla de productos y servicios */}
         <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
           <H2text message={'Datos de la venta'}/>

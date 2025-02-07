@@ -5,11 +5,10 @@ const SalesSelect = ({labelText, value, onChange, options}) =>{
                 {labelText}
         </label>
         <select
-          value={value}
+          value={value || options[0]}
           onChange={onChange}
           className="w-full p-2 border  font-light rounded-md focus:ring-2 focus:ring-sky-900 focus:outline-none"
         >
-          <option key='default' value="">Seleccionar</option>
           {options.map((option)=>(
             <option key={option} value={option}>{option}</option>
           ))}
