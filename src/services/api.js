@@ -1,10 +1,19 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    headers: {
-        Authorization: 'Bearer token'
-    }
-})
+    baseURL: import.meta.env.VITE_API_URL
+});
 
-export default api;
+const sunatApi = axios.create({
+    baseURL: import.meta.env.VITE_SUNAT_API_URL
+});
+
+api.interceptors.request.use((config) =>{
+    const token = localStorage.getItem('jwt');
+    if(token){
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    return config;
+});
+
+export { api, sunatApi };
