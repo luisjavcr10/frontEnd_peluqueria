@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getDniData, getBasicRucData } from "../../../services/sunatService";
+import { getCurrentUser } from '../../../services/userServices';
+import { getSales, postSales } from "../../../services/salesServices";
 import ModalListProduct from "../../../components/modals/ModalListProduct";
 import ModalListService from "../../../components/modals/ModalListService";
 import H2text from "../../../components/text/H2text";
@@ -6,7 +9,6 @@ import SalesSelect from "../../../components/selects/SalesSelect";
 import Input from "../../../components/Input";
 import AddItemInSale from "../../../components/buttons/AddItemInSale";
 import SaleDailsTable from "../../../components/tables/SaleDetailsTable";
-import { getDniData, getBasicRucData } from "../../../services/sunatService";
 import { IoSend } from "react-icons/io5";
 import { ThreeDot } from 'react-loading-indicators';
 import { MdCleaningServices } from "react-icons/md";
@@ -16,6 +18,8 @@ const DetallesVenta = () => {
     const [showServiceModal, setShowServiceModal] = useState(false);
     const [readOnlyInput, setReadOnlyInput] = useState(false);
     const [bgInput, setBgInput]=useState('');
+    const [currectUser, setCurrentUser] = useState(null);
+    const [quantitySales, setQuantitySales]=useState(null);
 
     const handleAddItems = (newItems) => {
         setItems(prev => [...prev, ...newItems]);
@@ -32,13 +36,13 @@ const DetallesVenta = () => {
       idCustomer: "",
       nameCustomer: "",
       correoCustomer:"",
-      methodPayment: "",
+      methodPayment: "Efectivo",
     });
     // Estado para manejar los productos y servicios agregados
     const [items, setItems] = useState([]);
 
     // Estado para manejar solicitud de RUC y DNI
-    const [docType, setDocType]=useState("");
+    const [docType, setDocType]=useState("RUC");
     const handleDocType= (e)=>{
       setDocType(e.target.value);
       setReadOnlyInput(false);
@@ -52,6 +56,11 @@ const DetallesVenta = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [cleanForm, setCleanForm] = useState(false)
 
+    useEffect(() => {
+      handleFetchUser();
+      handleGetSales();
+    }, []);
+  
     const handleCleanForm = () =>{
       setCleanForm(false);
       setFormData((prev) => ({...prev,idCustomer:'', nameCustomer: ''}));
@@ -100,8 +109,56 @@ const DetallesVenta = () => {
 
     // Función para calcular el total de la venta
     const calcularTotal = () => {
-        return items.reduce((total, item) => total + item.subTotal, 0).toFixed(2);
+      return items.reduce((total, item) => total + (parseFloat(item.subtotal) || 0), 0).toFixed(2);
+  };
+
+    const handleFetchUser = async () => {
+      const userData = await getCurrentUser()
+      setCurrentUser(userData.idUser);
     };
+
+    const handleGetSales = async () => {
+      try {
+        const data = await getSales();
+        setQuantitySales(data.sales.length);
+      } catch (error) {
+        console.error("Error fetching sales data:", error);
+      }
+    }
+
+    const buildIdSale= () =>{
+      const id = (docType==='RUC' ? 'F':'B')+'-'+(quantitySales+1).toString().padStart(4, '0');
+      return id;
+    };
+
+    const createSale = async ()=>{
+      const total = calcularTotal();
+      const igv = (calcularTotal()===0? 0 : 0.18 * total);
+      const totalGravado=(calcularTotal()===0? 0 : total-igv);
+      const data = {
+        idSales: buildIdSale(),
+        idUser: currectUser,
+        ruc: '10410023925',
+        totalGravado: parseFloat(totalGravado.toFixed(2)),
+        igv: parseFloat(igv.toFixed(2)),
+        total: parseFloat(total),
+        idCustomer: formData.idCustomer,
+        nameCustomer: formData.nameCustomer,
+        methodPayment: formData.methodPayment
+      } 
+      const itemsData = items;
+      const dataSale = {
+        saleData: data,
+        saleDetailsData:itemsData
+      }
+      console.log(dataSale);
+      try {
+        const response = await postSales(dataSale);
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
     return (
       <div className="p-6 bg-gray-50 min-h-screen">
@@ -134,7 +191,7 @@ const DetallesVenta = () => {
               </div>
             <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                 <div className="grid grid-cols-9 gap-2">
-                  {/* Select: Tipo de Comprobante */}
+                  {/* Select: Tipo de Documento */}
                   <div className="relative w-full col-start-1 col-span-3">
                     <SalesSelect 
                       value={docType} 
@@ -224,7 +281,7 @@ const DetallesVenta = () => {
         {/* Botón para procesar el pago */}
         <div className="mt-6">
           <button
-            onClick={() => console.log("Procesar pago")}
+            onClick={createSale}
             className="w-full bg-gradient-to-r from-gray-600 to-neutral-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition-transform transform lg:duration-300 hover:-translate-y-2l hover:scale-x-105"
           >
             Procesar Pago

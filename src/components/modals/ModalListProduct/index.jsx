@@ -47,11 +47,10 @@ const ModalListProduct = ({ isOpen, onClose, onAddItems }) => {
   const handleAddToSale = () => {
     const itemsToAdd = selectedProducts.map(product => ({
       type: 'PRODUCTO',
-      id: product.idProduct,
-      name: product.name,
-      unitPrice: product.price,
+      idProduct: product.idProduct,
+      unitPrice: parseFloat(product.price),
       quantity: product.quantity,
-      subTotal: product.price * product.quantity
+      subtotal: product.price * product.quantity
     }));
     
     onAddItems(itemsToAdd);

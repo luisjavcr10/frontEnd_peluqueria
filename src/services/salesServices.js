@@ -11,3 +11,13 @@ export const getSales = async (offset,limit) =>{
         throw error.response?.data?.message || 'Error al obtener las ventas';
     }
 };
+
+export const postSales = async (saleData) =>{
+    try {
+        const response = await api.post('/sales', saleData);
+        return response.data;
+    } catch (error) {
+        console.error('Error al crear la venta:', error);
+        throw error.response?.data?.message || 'Error al crear la venta';
+    }
+};
