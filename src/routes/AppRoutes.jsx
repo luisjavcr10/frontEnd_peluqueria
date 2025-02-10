@@ -14,6 +14,7 @@ import Empleados from '../pages/mantenedores/Empleados';
 import Roles from '../pages/mantenedores/Roles';
 import MantenedorHome from '../pages/MantenedorHome';
 import DetallesVenta from '../pages/Ventas/DetallesVenta';
+import DetallePostVenta from '../pages/Ventas/DetallePostVenta';
 
 const AppRoutes = () =>{
     return (
@@ -32,6 +33,7 @@ const AppRoutes = () =>{
                         <Route path='cuenta-usuario' element={<CuentaUsuario/>}/>
                         <Route path='ventas' element={<Ventas/>}/>
                         <Route path='ventas/detalles-venta' element={<DetallesVenta/>}/>
+                        <Route path='ventas/detalles-venta/:idVenta' element={<DetallePostVenta/>}/>
                         <Route path='mantenedores/categorias' element={<Categorias/>}/>
                         <Route path='mantenedores/productos' element={<Productos/>}/>
                         <Route path='mantenedores/servicios' element={<Servicios/>}/>

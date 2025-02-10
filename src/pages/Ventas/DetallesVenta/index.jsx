@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getDniData, getBasicRucData } from "../../../services/sunatService";
 import { getCurrentUser } from '../../../services/userServices';
-import { getSales, postSales } from "../../../services/salesServices";
+import { getSales } from "../../../services/salesServices";
 import ModalListProduct from "../../../components/modals/ModalListProduct";
 import ModalListService from "../../../components/modals/ModalListService";
 import H2text from "../../../components/text/H2text";
@@ -20,6 +21,8 @@ const DetallesVenta = () => {
     const [bgInput, setBgInput]=useState('');
     const [currectUser, setCurrentUser] = useState(null);
     const [quantitySales, setQuantitySales]=useState(null);
+
+    const navigate = useNavigate();
 
     const handleAddItems = (newItems) => {
         setItems(prev => [...prev, ...newItems]);
@@ -135,6 +138,8 @@ const DetallesVenta = () => {
       const total = calcularTotal();
       const igv = (calcularTotal()===0? 0 : 0.18 * total);
       const totalGravado=(calcularTotal()===0? 0 : total-igv);
+      const correo = formData.correoCustomer;
+      const date = new Date();
       const data = {
         idSales: buildIdSale(),
         idUser: currectUser,
@@ -151,10 +156,9 @@ const DetallesVenta = () => {
         saleData: data,
         saleDetailsData:itemsData
       }
-      console.log(dataSale);
       try {
-        const response = await postSales(dataSale);
-        console.log(response);
+        //await postSales(dataSale);
+        navigate(`/ventas/detalles-venta/${data.idSales}`,{state:{saleData:{...dataSale,correo,date}}});
       } catch (error) {
         console.error(error);
       }
