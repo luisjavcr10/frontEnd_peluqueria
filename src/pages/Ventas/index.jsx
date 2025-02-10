@@ -15,7 +15,7 @@ const Ventas = () =>{
     const [offset, setOffset] = useState(0);
     const [message, setMessage] = useState(null);
     const limit = 10;
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
 
     useEffect(() => {handleFetchAll()}, [offset]);
 
@@ -32,7 +32,6 @@ const Ventas = () =>{
     };
 
     const handleNewSale = () =>{
-        console.log('Holaaaaaaaaaaaaa')
         navigate('/ventas/detalles-venta');
     };
 
