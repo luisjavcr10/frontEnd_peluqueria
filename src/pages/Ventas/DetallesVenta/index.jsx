@@ -157,7 +157,7 @@ const DetallesVenta = () => {
         saleDetailsData:itemsData
       }
       try {
-        //await postSales(dataSale);
+        await postSales(dataSale);
         navigate(`/ventas/detalles-venta/${data.idSales}`,{state:{saleData:{...dataSale,correo,date}}});
       } catch (error) {
         console.error(error);
