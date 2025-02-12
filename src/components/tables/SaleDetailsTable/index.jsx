@@ -26,7 +26,7 @@ const SaleDailsTable = ({items, total}) => {
                     <td className="p-2">{item.name}</td>
                     <td className="p-2">S/ {item.unitPrice}</td>
                     <td className="p-2">{item.quantity}</td>
-                    <td className="p-2">S/ {item.subTotal}</td>
+                    <td className="p-2">S/ {item.subtotal}</td>
                   </tr>
                 ))
               )}

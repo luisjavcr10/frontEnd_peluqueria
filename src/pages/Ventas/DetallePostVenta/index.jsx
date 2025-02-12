@@ -54,7 +54,7 @@ const DetallePostVenta = () => {
                                 <div className="col-span-1 text-center">S/. {(detail.subtotal || 0).toFixed(2)}</div>
                             </div>
                         ))}
-                        <div className="flex flex-col lg:flex-row justify-end gap-2 font-semibold pt-4 pb-2 text-white text-right">
+                        <div className="flex flex-row justify-end gap-2 font-semibold pt-4 pb-2 text-white text-right">
                             <div className="w-fit col-span-2 my-1 bg-gradient-to-r from-gray-700 to-gray-600 py-1 px-4 rounded-lg shadow-md ">IGV: S/. {(headSale.igv || 0).toFixed(2)}</div>
                             <div className="w-fit col-span-2 my-1 bg-gradient-to-r from-lime-900 to-lime-800 py-1 px-4 rounded-lg shadow-md">Total Gravado: S/. {(headSale.totalGravado || 0).toFixed(2)}</div>
                             <div className="w-fit col-span-2 my-1 bg-gradient-to-r from-sky-900 to-sky-800 py-1 px-4 rounded-lg shadow-md">Total: S/. {(headSale.total || 0).toFixed(2)}</div>
@@ -63,7 +63,7 @@ const DetallePostVenta = () => {
                 </div>
 
                 {/* Botón de Impresión */}
-                <div className="flex flex-col lg:flex-row justify-end gap-4 md:mr-8">
+                <div className="flex flex-row justify-end gap-4 md:mr-8">
                     <button
                         onClick={() => navigate('/ventas')}
                         className="bg-gradient-to-r from-gray-400 to-gray-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform lg:duration-300 hover:-translate-y-2l hover:scale-110"
