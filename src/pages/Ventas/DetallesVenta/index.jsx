@@ -14,6 +14,9 @@ import { IoSend } from "react-icons/io5";
 import { ThreeDot } from 'react-loading-indicators';
 import { MdCleaningServices } from "react-icons/md";
 
+import PayPalProvider from "../../../context/PayPalProvider";
+import PayPalButton from "../../../components/buttons/PayPalButton";
+
 const DetallesVenta = () => {
     const [showProductModal, setShowProductModal] = useState(false);
     const [showServiceModal, setShowServiceModal] = useState(false);
@@ -262,7 +265,7 @@ const DetallesVenta = () => {
                     labelText={'Forma de Pago'} 
                     value={formData.methodPayment} 
                     onChange={(e) => handleInputChange("methodPayment", e.target.value)}
-                    options={['Efectivo','Tarjeta','Yape']}
+                    options={['Efectivo','PayPal','Tarjeta','Yape']}
                   />
                 </div>
               </div>
@@ -283,13 +286,17 @@ const DetallesVenta = () => {
         </div>
 
         {/* Botón para procesar el pago */}
-        <div className="mt-6">
-          <button
+        <div className="flex flex-col items-center w-full mt-6">
+          {formData.methodPayment  === 'Efectivo' && <button
             onClick={createSale}
-            className="w-full bg-gradient-to-r from-gray-600 to-neutral-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition-transform transform lg:duration-300 hover:-translate-y-2l hover:scale-x-105"
+            className="w-11/12 bg-gradient-to-r from-gray-600 to-neutral-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition-transform transform lg:duration-300 hover:-translate-y-2l hover:scale-x-105"
           >
             Procesar Pago
-          </button>
+          </button>}
+            { formData.methodPayment  === 'PayPal' &&<PayPalProvider>
+              <PayPalButton/>
+            </PayPalProvider>}
+          
         </div>
 
           {/* Modales */}
