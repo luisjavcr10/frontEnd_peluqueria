@@ -1,9 +1,40 @@
 import { PayPalButtons } from "@paypal/react-paypal-js";
+import { useNavigate } from "react-router-dom";
+import { postSales } from "../../../services/salesServices";
 
 const PayPalButton = ({ orderData }) =>{
-    const createOrder = async () => {
+    const navigate = useNavigate();
+
+    const totalInUSD = async (totalPEN)=>{
+        const response = await fetch('https://v6.exchangerate-api.com/v6/143c509aef0d49cdcc4c39fc/latest/USD', {
+            method: "GET"
+        });
+        const data = await response.json();
+        const value = data.conversion_rates.PEN;
+        const totalUSD = totalPEN/value;
+        return totalUSD;
+    };
+
+    const postSaleData = async () => {
         try {
-            console.log(orderData);
+            const dataSale = orderData.saleData;
+            const saleDetails = orderData.saleDetailsData.map(({ name, ...rest }) => ({ ...rest }));
+            const bodyFinal ={
+              saleData:dataSale,
+              saleDetailsData:saleDetails,
+            }
+            await postSales(bodyFinal);
+            navigate(`/ventas/detalles-venta/${dataSale.idSales}`, { state: { saleData: orderData } });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const createOrder = async () => {
+        const total = orderData.saleData.total;
+        const totalUSD = ((await totalInUSD(total)).toFixed(2));
+        console.log(totalUSD)
+        try {
             const dataSale = {
                 intent: 'CAPTURE',
                 purchase_units: [
@@ -11,25 +42,10 @@ const PayPalButton = ({ orderData }) =>{
                         reference_id: 'PUHF',
                         amount: {
                             currency_code: 'USD',
-                            value: orderData.saleData.total, // Ensure it's a string
-                            breakdown: {
-                                item_total: { currency_code: 'USD', value: orderData.saleData.total } // Ensure it's a string
-                            }
-                        },
-                        items: orderData.saleDetailsData.map(item => ({
-                            name: item.name, // Optional
-                            quantity: item.quantity.toString(), // PayPal requires string
-                            unit_amount: {
-                                currency_code: 'USD',
-                                value: item.unitPrice// Ensure it's a string
-                            }
-                        }))
+                            value: totalUSD, 
+                        }
                     }
-                ],
-                application_context: { 
-                    return_url: '', 
-                    cancel_url: '' 
-                }
+                ]
             };
             console.log(dataSale);
             const response = await fetch("http://localhost:3000/api/v1/paypal/create-order", {
@@ -54,7 +70,7 @@ const PayPalButton = ({ orderData }) =>{
     };
 
     const onApprove = async (data) => {
-        const response = await fetch("http://localhost:3000/api/v1/paypal/capture-order", {
+        await fetch("http://localhost:3000/api/v1/paypal/capture-order", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -62,9 +78,7 @@ const PayPalButton = ({ orderData }) =>{
             body: JSON.stringify({ orderID: data.orderID }),
         });
 
-        const orderData = await response.json();
-        console.log("Pago aprobado:", orderData);
-        alert("Pago completado con éxito");
+        await postSaleData();
     };
 
     const styles = {
@@ -74,7 +88,7 @@ const PayPalButton = ({ orderData }) =>{
         label: "checkout",
         borderRadius: 10,
     };
-    
+
     return (
         <div className="w-3/4">
             <PayPalButtons
@@ -83,7 +97,6 @@ const PayPalButton = ({ orderData }) =>{
                 onApprove={onApprove}
             />
         </div>
-        
     );
 }
 

@@ -297,7 +297,6 @@ const DetallesVenta = () => {
               <AddItemInSale onClick={() => setShowServiceModal(true)} message={'Agregar Servicios'}/>
             </div>
           </div>
-          
         </div>
         
         {/* Tabla de productos y servicios */}
