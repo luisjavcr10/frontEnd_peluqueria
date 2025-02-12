@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getDniData, getBasicRucData } from "../../../services/sunatService";
 import { getCurrentUser } from '../../../services/userServices';
-import { getSales } from "../../../services/salesServices";
+import { getSales, postSales } from "../../../services/salesServices";
 import ModalListProduct from "../../../components/modals/ModalListProduct";
 import ModalListService from "../../../components/modals/ModalListService";
 import H2text from "../../../components/text/H2text";
@@ -137,35 +137,56 @@ const DetallesVenta = () => {
       return id;
     };
 
-    const createSale = async ()=>{
-      const total = calcularTotal();
-      const igv = (calcularTotal()===0? 0 : 0.18 * total);
-      const totalGravado=(calcularTotal()===0? 0 : total-igv);
-      const correo = formData.correoCustomer;
-      const date = new Date();
-      const data = {
-        idSales: buildIdSale(),
-        idUser: currectUser,
-        ruc: '10410023925',
-        totalGravado: parseFloat(totalGravado.toFixed(2)),
-        igv: parseFloat(igv.toFixed(2)),
-        total: parseFloat(total),
-        idCustomer: formData.idCustomer,
-        nameCustomer: formData.nameCustomer,
-        methodPayment: formData.methodPayment
-      } 
-      const itemsData = items;
-      const dataSale = {
-        saleData: data,
-        saleDetailsData:itemsData
-      }
-      try {
-        await postSales(dataSale);
-        navigate(`/ventas/detalles-venta/${data.idSales}`,{state:{saleData:{...dataSale,correo,date}}});
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    const buildSaleData = () => {
+        const total = calcularTotal();
+        const igv = (calcularTotal() === 0 ? 0 : 0.18 * total);
+        const totalGravado = (calcularTotal() === 0 ? 0 : total - igv);
+        const correo = formData.correoCustomer;
+        const date = new Date();
+    
+        const data = {
+            idSales: buildIdSale(),
+            idUser: currectUser,
+            ruc: '10410023925',
+            totalGravado: parseFloat(totalGravado.toFixed(2)),
+            igv: parseFloat(igv.toFixed(2)),
+            total: parseFloat(total),
+            idCustomer: formData.idCustomer,
+            nameCustomer: formData.nameCustomer,
+            methodPayment: formData.methodPayment
+        };
+    
+        return {
+            saleData: data,
+            saleDetailsData: items,
+            correo,
+            date
+        };
+    };
+    
+    const postSaleData = async (body) => {
+        try {
+            const dataSale = body.saleData;
+            const saleDetails = body.saleDetailsData.map(({ name, ...rest }) => ({ ...rest }));
+            const bodyFinal ={
+              saleData:dataSale,
+              saleDetailsData:saleDetails,
+            }
+            await postSales(bodyFinal);
+            navigate(`/ventas/detalles-venta/${dataSale.idSales}`, { state: { saleData: body } });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
+    const createSale = async () => {
+        const dataSale = buildSaleData();
+        const body = {
+          saleData:dataSale.saleData,
+          saleDetailsData: dataSale.saleDetailsData
+        }
+        await postSaleData(body);
+    };
 
     return (
       <div className="p-6 bg-gray-50 min-h-screen">
@@ -276,7 +297,6 @@ const DetallesVenta = () => {
               <AddItemInSale onClick={() => setShowServiceModal(true)} message={'Agregar Servicios'}/>
             </div>
           </div>
-          
         </div>
         
         {/* Tabla de productos y servicios */}
@@ -294,7 +314,7 @@ const DetallesVenta = () => {
             Procesar Pago
           </button>}
             { formData.methodPayment  === 'PayPal' &&<PayPalProvider>
-              <PayPalButton/>
+              <PayPalButton orderData={buildSaleData()}/>
             </PayPalProvider>}
           
         </div>
