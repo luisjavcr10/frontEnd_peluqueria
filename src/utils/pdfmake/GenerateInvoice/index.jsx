@@ -143,7 +143,7 @@ const generateInvoice = (saleData) => {
         }
     };
 
-    pdfMake.createPdf(docDefinition).download();
+    pdfMake.createPdf(docDefinition).download(`Invoice_${head.idSales}.pdf`);
 };
 
 export default generateInvoice;
