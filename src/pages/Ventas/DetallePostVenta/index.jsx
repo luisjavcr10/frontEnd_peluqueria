@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdDownload,IoIosHome } from "react-icons/io";
 import ConfettiSlow from "../../../components/canvas-confetti/ConfettiSlow";
-
+import generateInvoice from "../../../utils/pdfmake/GenerateInvoice";
+import { useEffect } from "react";
 
 const DetallePostVenta = () => {
     const location = useLocation();
@@ -9,7 +10,12 @@ const DetallePostVenta = () => {
     const headSale = saleData?.saleData;
     const detailsSale = saleData?.saleDetailsData || [];
 
-    console.log(saleData)
+    console.log(saleData);
+
+    useEffect(() => {
+        generateInvoice(saleData);
+    });
+    
 
     const navigate = useNavigate();
 
@@ -76,7 +82,7 @@ const DetallePostVenta = () => {
                         <IoIosHome className="text-lg"/>
                     </button>
                     <button
-                        onClick={() => window.print()}
+                        onClick={()=>generateInvoice(saleData)}
                         className="bg-gradient-to-r from-lime-900 to-lime-800 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform lg:duration-300 hover:-translate-y-2l hover:scale-110"
                     >
                         <IoMdDownload className="text-lg"/>

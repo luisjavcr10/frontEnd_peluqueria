@@ -17,7 +17,7 @@ const Input = ({type, value, onChange, bg, placeholder, readOnly, docType}) =>{
             }
         } else if (type === "text") {
             // Allow only letters, spaces, and accents for text
-            if (/^[a-zA-ZÀ-ÿ\s]*$/.test(newValue)) {
+            if (/^.*$/.test(newValue)) {
                 onChange(e);
             }
         } else {
