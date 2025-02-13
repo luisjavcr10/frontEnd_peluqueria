@@ -1,11 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdDownload,IoIosHome } from "react-icons/io";
+import ConfettiSlow from "../../../components/canvas-confetti/ConfettiSlow";
+
 
 const DetallePostVenta = () => {
     const location = useLocation();
     const { saleData } = location.state || {};
     const headSale = saleData?.saleData;
     const detailsSale = saleData?.saleDetailsData || [];
+
+    console.log(saleData)
 
     const navigate = useNavigate();
 
@@ -14,7 +18,8 @@ const DetallePostVenta = () => {
     }
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
+        <div className=" bg-gray-50 min-h-scree h-full pt-8">
+            <ConfettiSlow/>
             {/* Encabezado */}
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
                 <h1 className="text-3xl font-bold text-center text-gray-800">Comprobante de Pago</h1>

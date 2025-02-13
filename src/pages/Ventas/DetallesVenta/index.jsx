@@ -164,16 +164,17 @@ const DetallesVenta = () => {
         };
     };
     
-    const postSaleData = async (body) => {
+    const postSaleData = async (body,bodyWithCorreoAndDate) => {
         try {
             const dataSale = body.saleData;
             const saleDetails = body.saleDetailsData.map(({ name, ...rest }) => ({ ...rest }));
             const bodyFinal ={
               saleData:dataSale,
               saleDetailsData:saleDetails,
+              
             }
             await postSales(bodyFinal);
-            navigate(`/ventas/detalles-venta/${dataSale.idSales}`, { state: { saleData: body } });
+            navigate(`/ventas/detalles-venta/${dataSale.idSales}`, { state: { saleData: bodyWithCorreoAndDate } });
         } catch (error) {
             console.error(error);
         }
@@ -185,7 +186,7 @@ const DetallesVenta = () => {
           saleData:dataSale.saleData,
           saleDetailsData: dataSale.saleDetailsData
         }
-        await postSaleData(body);
+        await postSaleData(body,dataSale);
     };
 
     return (

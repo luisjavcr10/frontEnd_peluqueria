@@ -4,15 +4,34 @@ import { postSales } from "../../../services/salesServices";
 
 const PayPalButton = ({ orderData }) =>{
     const navigate = useNavigate();
+    const saleData = orderData.saleData;
+    const itemsSaleData = orderData.saleDetailsData;
 
-    const totalInUSD = async (totalPEN)=>{
+    const getConversionValue = async () =>{
         const response = await fetch('https://v6.exchangerate-api.com/v6/143c509aef0d49cdcc4c39fc/latest/USD', {
             method: "GET"
         });
         const data = await response.json();
         const value = data.conversion_rates.PEN;
-        const totalUSD = totalPEN/value;
-        return totalUSD;
+        return value;
+    }
+
+    const totalInUSD = async ()=>{
+        const value = await getConversionValue();
+        let totalUSD = 0;
+        const itemsSaleDataUSD = itemsSaleData.map((item) =>{
+            const unitPriceUSD = (item.unitPrice / value).toFixed(2);
+            totalUSD += parseFloat(unitPriceUSD);
+            return{
+                ...item,
+                unitPrice: unitPriceUSD,
+            }
+        });
+        const saleDataUSD = {
+            ...saleData,
+            total: totalUSD.toFixed(2),
+        };
+        return({saleDataUSD, itemsSaleDataUSD});
     };
 
     const postSaleData = async () => {
@@ -31,9 +50,8 @@ const PayPalButton = ({ orderData }) =>{
     };
 
     const createOrder = async () => {
-        const total = orderData.saleData.total;
-        const totalUSD = ((await totalInUSD(total)).toFixed(2));
-        console.log(totalUSD)
+        const saleTotalDataUSD = await totalInUSD();
+        console.log(saleTotalDataUSD)
         try {
             const dataSale = {
                 intent: 'CAPTURE',
@@ -42,9 +60,22 @@ const PayPalButton = ({ orderData }) =>{
                         reference_id: 'PUHF',
                         amount: {
                             currency_code: 'USD',
-                            value: totalUSD, 
-                        }
+                            value: saleTotalDataUSD.saleDataUSD.total, 
+                            breakdown: {
+                                item_total: { currency_code: 'USD', value: saleTotalDataUSD.saleDataUSD.total }
+                            }
+                        },
+                        items: saleTotalDataUSD.itemsSaleDataUSD.map(item => ({
+                            name: item.name,
+                            description: item.description || "",
+                            quantity: item.quantity.toString(),
+                            unit_amount: {
+                                currency_code: 'USD',
+                                value: item.unitPrice
+                            }
+                        }))
                     }
+                    
                 ]
             };
             console.log(dataSale);
@@ -70,15 +101,26 @@ const PayPalButton = ({ orderData }) =>{
     };
 
     const onApprove = async (data) => {
-        await fetch("http://localhost:3000/api/v1/paypal/capture-order", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ orderID: data.orderID }),
-        });
+        try {
+            const captureResponse = await fetch("http://localhost:3000/api/v1/paypal/capture-order", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ orderID: data.orderID }),
+            });
 
-        await postSaleData();
+            if (!captureResponse.ok) {
+                throw new Error(`Error capturing order: ${captureResponse.statusText}`);
+            }
+
+            const captureData = await captureResponse.json();
+
+            await postSaleData(); 
+        } catch (error) {
+            console.error("Error in onApprove transaction:", error);
+            alert("There was an error completing the transaction. Please try again.");
+        }
     };
 
     const styles = {
