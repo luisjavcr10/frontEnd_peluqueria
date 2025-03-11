@@ -3,62 +3,65 @@ import { getServices } from '../../../services/servicesService';
 import { MdCancel } from 'react-icons/md';
 
 const ModalListService = ({ isOpen, onClose, onAddItems }) => {
-    const [services, setServices] = useState([]);
-    const [selectedServices, setSelectedServices] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [offset, setOffset] = useState(0);
-    const limit = 10;
+  const [services, setServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [offset, setOffset] = useState(0);
+  const limit = 10;
 
-    const handleFetchAll = async () => {
-        try {
-        const data = await getServices(offset, limit);
-        setServices(data);
-        } catch (error) {
-        console.error(error);
-        }
-    };
- 
-    useEffect(() => {
-        if (isOpen) {
-        handleFetchAll();
-        }
-    }, [isOpen, offset]);
+  //Funcion para obtener los servicos
+  const handleFetchAll = async () => {
+      try {
+      const data = await getServices(offset, limit);
+      setServices(data);
+      } catch (error) {
+      console.error(error);
+      }
+  };
 
-    const handleSelectService = (service) => {
-        setSelectedServices(prev => {
-        const exists = prev.find(s => s.idService === service.idService);
-        if (exists) return prev;
-        return [...prev, { ...service, quantity: 1 }];
-        });
-    };
+  //Hook para cargar los datos
+  useEffect(() => {
+      if (isOpen) {
+      handleFetchAll();
+      }
+  }, [isOpen, offset]);
 
-    const handleRemoveSelectService = (service) => {
-        setSelectedServices(prev => prev.filter(s => s.idService !== service.idService));
-    };
 
-    const handleQuantityChange = (id, quantity) => {
-        setSelectedServices(prev =>
-        prev.map(s =>
-            s.idService === id ? { ...s, quantity: Math.max(1, quantity) } : s
-        )
-        );
-    };
+  const handleSelectService = (service) => {
+      setSelectedServices(prev => {
+      const exists = prev.find(s => s.idService === service.idService);
+      if (exists) return prev;
+      return [...prev, { ...service, quantity: 1 }];
+      });
+  };
 
-    const handleAddToSale = () => {
-      const itemsToAdd = selectedServices.map(service => ({
-        type: 'SERVICIO',
-        idService: service.idService,
-        name: service.name,
-        unitPrice: parseFloat(service.price),
-        quantity: service.quantity,
-        subtotal: service.price * service.quantity
-      }));
-      
-      onAddItems(itemsToAdd);
-      onClose();
-    };
+  const handleRemoveSelectService = (service) => {
+      setSelectedServices(prev => prev.filter(s => s.idService !== service.idService));
+  };
 
-    if (!isOpen) return null;
+  const handleQuantityChange = (id, quantity) => {
+      setSelectedServices(prev =>
+      prev.map(s =>
+          s.idService === id ? { ...s, quantity: Math.max(1, quantity) } : s
+      )
+      );
+  };
+
+  const handleAddToSale = () => {
+    const itemsToAdd = selectedServices.map(service => ({
+      type: 'SERVICIO',
+      idService: service.idService,
+      name: service.name,
+      unitPrice: parseFloat(service.price),
+      quantity: service.quantity,
+      subtotal: service.price * service.quantity
+    }));
+    
+    onAddItems(itemsToAdd);
+    onClose();
+  };
+  
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">

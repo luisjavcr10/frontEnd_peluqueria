@@ -9,6 +9,7 @@ const ModalListProduct = ({ isOpen, onClose, onAddItems }) => {
   const [offset, setOffset] = useState(0);
   const limit = 10;
 
+  //Funcion para obtener los productos
   const handleFetchAll = async () => {
     try {
       const data = await getProducts(offset, limit);
