@@ -7,7 +7,7 @@ const SalesSelect = ({labelText, value, onChange, options}) =>{
         <select
           value={value || options[0]}
           onChange={onChange}
-          className="w-full p-2 border  font-light rounded-md focus:ring-2 focus:ring-sky-900 focus:outline-none"
+          className="w-full p-2 border font-light rounded-md focus:ring-2 focus:ring-sky-900 focus:outline-none"
         >
           {options.map((option)=>(
             <option key={option} value={option}>{option}</option>
