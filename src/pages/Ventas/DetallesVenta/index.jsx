@@ -46,6 +46,7 @@ const DetallesVenta = () => {
     });
     // Estado para manejar los productos y servicios agregados
     const [items, setItems] = useState([]);
+    console.log(items);
 
     // Estado para manejar solicitud de RUC y DNI
     const [docType, setDocType]=useState("RUC");

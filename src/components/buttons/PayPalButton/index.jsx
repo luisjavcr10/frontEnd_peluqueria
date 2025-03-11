@@ -21,7 +21,7 @@ const PayPalButton = ({ orderData }) =>{
         let totalUSD = 0;
         const itemsSaleDataUSD = itemsSaleData.map((item) =>{
             const unitPriceUSD = (item.unitPrice / value).toFixed(2);
-            totalUSD += parseFloat(unitPriceUSD);
+            totalUSD += (parseFloat(unitPriceUSD)*item.quantity);
             return{
                 ...item,
                 unitPrice: unitPriceUSD,

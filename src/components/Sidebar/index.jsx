@@ -8,7 +8,7 @@ import LogOutButton from '../buttons/LogOutButton'
 import { RiHome9Fill,RiMoneyDollarCircleFill } from 'react-icons/ri';
 import { FaWindowRestore } from 'react-icons/fa6';
 import { FaUserCircle } from 'react-icons/fa';
-import { IoLogOut } from 'react-icons/io5';
+import { IoLogOut,IoMenu } from 'react-icons/io5';
 import { GrDocumentStore } from 'react-icons/gr';
 
 const Sidebar = () =>{
@@ -39,10 +39,10 @@ const Sidebar = () =>{
         <>
         {/* Botón para abrir/cerrar el Sidebar */}
         <button
-            className='lg:hidden p-4 bg-stone-900 text-white absolute bottom-0 left-0 z-50 rounded-full '
+            className='lg:hidden p-3 bg-gray-700 text-white absolute bottom-0 left-0 z-50 rounded-xl '
             onClick={() => setIsOpenSidebar(!isOpenSidebar)}
         >
-            {isOpenSidebar ? 'Cerrar' : 'Menú'}
+            {isOpenSidebar ? 'Cerrar' : <IoMenu className='text-xl text-white' />}
         </button>
 
         <aside

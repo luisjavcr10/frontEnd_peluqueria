@@ -24,6 +24,7 @@
     "react-loading-indicators": "^1.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.0.2",
+    "recharts": "^2.15.1",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0"
   },
