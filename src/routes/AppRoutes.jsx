@@ -15,6 +15,7 @@ import Roles from '../pages/mantenedores/Roles';
 import MantenedorHome from '../pages/MantenedorHome';
 import DetallesVenta from '../pages/Ventas/DetallesVenta';
 import DetallePostVenta from '../pages/Ventas/DetallePostVenta';
+import DashboardHome from '../pages/DashboardHome';
 
 const AppRoutes = () =>{
     return (
@@ -28,6 +29,7 @@ const AppRoutes = () =>{
                         <ProtectedRoute>
                             <Dashboard/>
                         </ProtectedRoute>}>
+                        <Route index element={<DashboardHome/>}/>
                         <Route path='mantenedores' element={<MantenedorHome/>}/>
                         <Route path='inventario' element={<Inventario/>}/>
                         <Route path='cuenta-usuario' element={<CuentaUsuario/>}/>

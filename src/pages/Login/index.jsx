@@ -20,7 +20,7 @@ const Login = () => {
       const data =  await login(credentials);
       const user = data.user;
       authLogin();
-      navigate('/inventario'); 
+      navigate('/'); 
     } catch (error) {
       setError(err);
     }

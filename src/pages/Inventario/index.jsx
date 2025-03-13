@@ -22,7 +22,7 @@ const Inventario = () => {
     const limit = 10;
 
     const handleSubmit = (e) => {
-        e.preventDefault(); // Evitar el refresco del navegador
+        e.preventDefault(); 
         console.log(e);
         if (!addedStock || isNaN(addedStock)) {
           alert('Por favor, ingresa un número válido');
@@ -46,6 +46,7 @@ const Inventario = () => {
         try {
             const data = await getProducts(offset, limit);
             setProducts(data);
+            console.log(data);
             setOriginalProducts(data);
             const c = await getCategories();
             setCategories(c);
