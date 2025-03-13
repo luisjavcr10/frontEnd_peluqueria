@@ -65,7 +65,7 @@ const LoteModal = ({ data, close, updateMethod }) => {
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
-      <div className='flex flex-col bg-white m-6 p-6 rounded-lg shadow-lg w-full max-w-3xl'>
+      <div className='flex flex-col bg-white m-6 p-6 rounded-lg shadow-lg w-11/12 max-w-3xl'>
         {/* Formulario de Búsqueda */}
         <div className='mb-6'>
           <FormSearch submit={handleSubmit} input={inputValue} handleInput={handleChangeInput} />
@@ -95,8 +95,8 @@ const LoteModal = ({ data, close, updateMethod }) => {
                     className='grid grid-cols-5 rounded-md border m-2 cursor-pointer hover:bg-blue-100 text-gray-800 transition'
                     onClick={() => handleInProductsInLote(product)}
                 >
-                    <div className='bg-gray-200 col-start-1 col-span-1 p-2 text-center text-sm'>ID: {product.idProduct}</div>
-                    <div className='bg-gray-50 col-start-2 col-span-4 p-2 text-sm'>{product.name}</div>
+                    <div className='bg-gray-200 col-start-1 col-span-2 p-2 text-center text-sm'>ID: {product.idProduct}</div>
+                    <div className='bg-gray-50 col-start-3 col-span-3 p-2 text-sm'>{product.name}</div>
                 </div>
             
                 ))
